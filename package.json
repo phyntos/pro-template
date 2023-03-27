@@ -1,6 +1,6 @@
 {
     "name": "pro-template",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Pro Template",
     "main": "./dist/pro-template.js",
     "types": "./dist/pro-template.d.ts",
