@@ -1,0 +1,39 @@
+.pro-workflow {
+    height: 56px;
+    min-height: 56px;
+    padding: 14px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    margin-bottom: 16px;
+
+    &.pro-workflow-transparent {
+        min-height: 28px;
+        padding: 0;
+        height: 28px;
+        background-color: transparent;
+        border-radius: 0;
+        border: none;
+    }
+
+    .pro-workflow-steps.pro-workflow-steps-small {
+        .pro-workflow-steps-item-icon {
+            margin-top: 2px;
+        }
+        .pro-workflow-steps-item-content {
+            display: inline-flex;
+            align-items: center;
+            height: 28px;
+        }
+        .pro-workflow-steps-item-title {
+            padding-right: 28px;
+            font-size: 14px;
+            white-space: break-spaces;
+            word-wrap: break-word;
+            line-height: 14px;
+            &::after {
+                content: none;
+            }
+        }
+    }
+}

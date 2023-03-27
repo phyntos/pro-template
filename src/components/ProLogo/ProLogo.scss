@@ -1,0 +1,42 @@
+.pro-logo-container {
+    width: 100%;
+
+    .pro-logo {
+        img {
+            transition: height 0.2s;
+            height: 43px;
+        }
+        transition: font-size 0.2s;
+        height: 43px;
+        text-align: center;
+        font-weight: bold;
+        color: var(--primary-color);
+        text-shadow: 1px 1px 2px var(--primary-color);
+        font-size: 24px;
+        line-height: 43px;
+        font-family: Verdana, Tahoma, sans-serif;
+    }
+
+    .pro-logo-desc {
+        font-size: 15px;
+        text-align: center;
+        color: #000000;
+    }
+    &.pro-logo-mini {
+        .pro-logo {
+            font-size: 20px;
+            img {
+                height: 30px;
+            }
+        }
+    }
+    &.pro-logo-big {
+        .pro-logo {
+            font-size: 32px;
+            img {
+                height: 60px;
+            }
+            height: 60px;
+        }
+    }
+}
