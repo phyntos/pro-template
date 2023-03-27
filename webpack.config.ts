@@ -39,6 +39,7 @@ const config: webpack.Configuration = {
     externals: {
         react: 'react',
         'react-dom': 'react-dom',
+        'react-router-dom': 'react-router-dom',
     },
     optimization: {
         minimize: true,
