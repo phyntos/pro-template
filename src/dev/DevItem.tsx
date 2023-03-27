@@ -77,6 +77,7 @@ const DevItem = () => {
                     transparent
                     form={form}
                     actions={actions}
+                    submitter={{ position: 'bottom' }}
                     span={8}
                     fields={[
                         {

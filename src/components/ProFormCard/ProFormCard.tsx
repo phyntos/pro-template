@@ -134,6 +134,10 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         | {
               hideReset?: boolean;
               saveText?: string;
+              resetText?: string;
+              saveIcon?: false | React.ReactNode;
+              resetIcon?: false | React.ReactNode;
+              position?: 'top' | 'bottom';
           };
     span?: 6 | 12 | 3 | 8 | 4 | 1 | 2;
     hidden?: boolean;
@@ -177,28 +181,56 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                 }
             });
     }
+    const submitterButtons =
+        submitter !== false ? (
+            <div
+                className={
+                    'pro-form-card-submitter' +
+                    (submitter?.position === 'bottom' ? ' pro-form-card-submitter-bottom' : '')
+                }
+            >
+                <Space>
+                    <ProButton
+                        onAsyncClick={() => actions.saveForm()}
+                        icon={
+                            submitter?.saveIcon ? (
+                                submitter?.saveIcon === false ? undefined : (
+                                    submitter?.saveIcon
+                                )
+                            ) : (
+                                <SaveOutlined />
+                            )
+                        }
+                    >
+                        {submitter?.saveText || 'Сохранить'}
+                    </ProButton>
+                    {!submitter?.hideReset && (
+                        <ProButton
+                            type='default'
+                            onClick={() => actions.setForm()}
+                            icon={
+                                submitter?.resetIcon ? (
+                                    submitter?.resetIcon === false ? undefined : (
+                                        submitter?.resetIcon
+                                    )
+                                ) : (
+                                    <RollbackOutlined />
+                                )
+                            }
+                        >
+                            {submitter?.resetText || 'Отмена'}
+                        </ProButton>
+                    )}
+                </Space>
+            </div>
+        ) : null;
 
-    if (submitter !== false) {
+    if (submitter !== false && (!submitter?.position || submitter.position === 'top')) {
         const spanDivider = 24 / span;
 
         for (let index = 0; index < spanDivider; index++) {
             if (childList.length < index) childList.push(null);
         }
-
-        const submitterButtons = (
-            <div className='pro-form-card-submitter'>
-                <Space>
-                    <ProButton onAsyncClick={() => actions.saveForm()} icon={<SaveOutlined />}>
-                        {submitter?.saveText || 'Сохранить'}
-                    </ProButton>
-                    {!submitter?.hideReset && (
-                        <ProButton type='default' onClick={() => actions.setForm()} icon={<RollbackOutlined />}>
-                            Отмена
-                        </ProButton>
-                    )}
-                </Space>
-            </div>
-        );
         childList.splice(spanDivider - 1, 0, submitterButtons);
     }
 
@@ -216,6 +248,9 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                                 </Col>
                             );
                         })}
+                        {submitter !== false && submitter?.position === 'bottom' ? (
+                            <Col span={24}>{submitterButtons}</Col>
+                        ) : null}
                     </Row>
                 </ProForm>
             </div>

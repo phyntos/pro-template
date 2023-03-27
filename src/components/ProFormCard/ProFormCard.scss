@@ -19,6 +19,8 @@
 
     .pro-form-card-submitter {
         text-align: right;
-        margin-bottom: 24px;
+        &.pro-form-card-submitter-bottom {
+            text-align: left;
+        }
     }
 }
