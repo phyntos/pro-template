@@ -38,6 +38,7 @@ const config: webpack.Configuration = {
     },
     externals: {
         react: 'react',
+        antd: 'antd',
         'react-dom': 'react-dom',
         'react-router-dom': 'react-router-dom',
     },
