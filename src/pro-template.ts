@@ -12,6 +12,7 @@ import ProLogin from './components/ProLogin/ProLogin';
 import ProButton from './components/ProButton/ProButton';
 import ProAntProvider from './components/ProAntProvider';
 import ProAccessControl from './components/ProAccess/ProAccessControl';
+import { numberNormalize } from './functions';
 
 export {
     ProContainer,
@@ -29,4 +30,5 @@ export {
     useProFormCardInstance,
     ProContainerItem,
     ProActionsDropdown,
+    numberNormalize,
 };
