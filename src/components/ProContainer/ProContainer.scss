@@ -135,21 +135,26 @@
     }
 }
 
+.pro-container-layout-content,
 .pro-container-item {
-    margin-bottom: 14px;
+    & > .pro-container-item {
+        margin-bottom: 14px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.pro-container-item {
     padding: 14px;
     border: 1px solid #f0f0f0;
     border-radius: 6px;
     background-color: #fff;
-    &:last-child {
-        margin-bottom: 0;
-    }
     &.pro-container-item-transparent {
         border: none;
         padding: 0;
         border-radius: 0;
         background-color: transparent;
-        // margin-bottom: 0;
     }
 }
 
