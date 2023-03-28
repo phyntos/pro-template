@@ -48,7 +48,7 @@ export const ProContainerContext = React.createContext<{
     setTransparent: () => {},
 });
 
-export const useProContainer = ({ title, transparent }: { title: string; transparent: boolean }) => {
+export const useProContainer = ({ title = '', transparent = false }: { title?: string; transparent?: boolean }) => {
     const { setTitle, setTransparent } = useContext(ProContainerContext);
 
     useEffect(() => {
