@@ -30,7 +30,21 @@ const DevItem = () => {
                         ],
                     },
                 ]}
-                infos={[{ label: 'DEV', value: 'dev', key: 'dev' }]}
+                infos={[
+                    {
+                        label: 'DEV',
+                        value: 'dev',
+                        key: 'dev',
+                        children: [
+                            {
+                                label: 'DEV',
+                                value: 'dev',
+                                key: 'dev',
+                                children: [{ label: 'DEV', value: 'dev', key: 'dev', children: [] }],
+                            },
+                        ],
+                    },
+                ]}
                 onReload={() => {
                     console.log('UPDATED');
                 }}
@@ -92,7 +106,7 @@ const DevItem = () => {
             />
             <ProContainerItem transparent={transparent}>
                 <ProFormCard
-                    transparent={transparent}
+                    transparent
                     form={form}
                     actions={actions}
                     submitter={{ position: 'bottom' }}
@@ -119,7 +133,7 @@ const DevItem = () => {
                     ]}
                 />
                 <ProFormCard
-                    transparent={transparent}
+                    transparent
                     form={form}
                     actions={actions}
                     submitter={{ position: 'bottom' }}

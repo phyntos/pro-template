@@ -145,6 +145,16 @@
     }
 }
 
+.pro-container-layout-content.pro-container-transparent-content {
+    & > .pro-container-item {
+        box-shadow: 0 0px 4px 2px rgba(0, 0, 0, 0.05);
+        border: none;
+        &.pro-container-item-transparent {
+            box-shadow: none;
+        }
+    }
+}
+
 .pro-container-item {
     padding: 14px;
     border: 1px solid #f0f0f0;

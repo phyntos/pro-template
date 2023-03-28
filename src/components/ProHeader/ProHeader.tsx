@@ -303,7 +303,7 @@ const ProHeader = ({
                     </Col>
                     {extraCols}
                     <Col {...actionsColProps}>
-                        <Space className='actions-space'>
+                        <Space className='pro-header-actions-space'>
                             {onReload && <Button icon={<ReloadOutlined />} onClick={onReload} />}
                             {actions}
                             {actionItems && <ProActionsDropdown items={actionItems} />}
