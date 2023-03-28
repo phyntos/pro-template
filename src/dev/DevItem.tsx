@@ -111,6 +111,7 @@ const DevItem = () => {
             <ProContainerItem transparent={transparent}>
                 <ProFormCard
                     // title='DEV'
+                    loading={loading}
                     transparent={transparent}
                     form={form}
                     actions={actions}

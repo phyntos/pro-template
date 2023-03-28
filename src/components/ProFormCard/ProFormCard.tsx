@@ -8,7 +8,7 @@ import {
     ProFormText,
 } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
-import { Col, ConfigProvider, DatePickerProps, Row, Space } from 'antd';
+import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
 import { InputProps, PasswordProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -150,6 +150,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     hidden,
     transparent,
     title,
+    loading,
     titleExtraRender,
 }: {
     form: FormInstance<FormVM>;
@@ -172,6 +173,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     span?: number | string;
     hidden?: boolean;
     transparent?: boolean;
+    loading?: boolean;
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 }) => {
@@ -299,9 +301,11 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     return (
         <ConfigProvider prefixCls='pro-form-card'>
             <ProContainerItem className='pro-form-card' transparent={transparent}>
-                <ProForm submitter={false} form={form}>
-                    {getFieldsRow({ childList, title, titleExtraRender })}
-                </ProForm>
+                <Spin spinning={loading || false}>
+                    <ProForm submitter={false} form={form}>
+                        {getFieldsRow({ childList, title, titleExtraRender })}
+                    </ProForm>
+                </Spin>
             </ProContainerItem>
         </ConfigProvider>
     );
