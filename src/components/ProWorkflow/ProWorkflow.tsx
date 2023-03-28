@@ -1,5 +1,6 @@
 import { ConfigProvider, Steps } from 'antd';
 import React from 'react';
+import { ProContainerItem } from '../ProContainer/ProContainer';
 import './ProWorkflow.scss';
 
 export type WorkflowVM<StatusCodes> = {
@@ -22,7 +23,7 @@ const ProWorkflow = <StatusCodes extends string>({
 }) => {
     return (
         <ConfigProvider prefixCls='pro-workflow'>
-            <div className={'pro-workflow pro-container-item' + (transparent ? ' pro-workflow-transparent' : '')}>
+            <ProContainerItem className='pro-workflow' transparent={transparent}>
                 <Steps
                     size='small'
                     current={workflows?.findIndex((workflow) => workflow.active)}
@@ -35,7 +36,7 @@ const ProWorkflow = <StatusCodes extends string>({
                             : undefined,
                     }))}
                 />
-            </div>
+            </ProContainerItem>
         </ConfigProvider>
     );
 };

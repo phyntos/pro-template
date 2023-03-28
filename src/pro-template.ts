@@ -1,4 +1,8 @@
-import ProContainer, { useProContainerTitle, useProFormCardInstance } from './components/ProContainer/ProContainer';
+import ProContainer, {
+    useProContainer,
+    useProFormCardInstance,
+    ProContainerItem,
+} from './components/ProContainer/ProContainer';
 import ProHeader from './components/ProHeader/ProHeader';
 import ProLogo from './components/ProLogo/ProLogo';
 import ProWorkflow from './components/ProWorkflow/ProWorkflow';
@@ -20,7 +24,8 @@ export {
     ProFormCard,
     ProButton,
     ProLogin,
-    useProContainerTitle,
+    useProContainer,
     useProFormCard,
     useProFormCardInstance,
+    ProContainerItem,
 };

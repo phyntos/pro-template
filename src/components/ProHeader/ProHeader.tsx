@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { numberNormalize } from '../../functions';
 import ProButton from '../ProButton/ProButton';
+import { ProContainerItem } from '../ProContainer/ProContainer';
 import './ProHeader.scss';
 
 export type InfoItem<T = string> = {
@@ -262,7 +263,7 @@ const ProHeader = ({
 
     return (
         <ConfigProvider prefixCls='pro-header'>
-            <div className={'pro-header pro-container-item' + (transparent ? ' pro-header-transparent' : '')}>
+            <ProContainerItem className='pro-header' transparent={transparent}>
                 <Row align='middle' justify='space-between' wrap={false}>
                     <Col {...titleColProps}>
                         <Space size={16}>
@@ -309,7 +310,7 @@ const ProHeader = ({
                         </Space>
                     </Col>
                 </Row>
-            </div>
+            </ProContainerItem>
         </ConfigProvider>
     );
 };

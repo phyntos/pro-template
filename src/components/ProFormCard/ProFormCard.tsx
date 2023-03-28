@@ -14,7 +14,7 @@ import { InputRef } from 'antd/lib/input/Input';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { deepComparison } from '../../functions';
 import ProButton from '../ProButton/ProButton';
-import { useSetProFormCardInstance } from '../ProContainer/ProContainer';
+import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
@@ -226,7 +226,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
 
     return (
         <ConfigProvider prefixCls='pro-form-card'>
-            <div className={'pro-form-card pro-container-item' + (transparent ? ' pro-form-card-transparent' : '')}>
+            <ProContainerItem className='pro-form-card' transparent={transparent}>
                 <ProForm submitter={false} form={form}>
                     <Row gutter={[10, 10]}>
                         {childList.map((item, index) => {
@@ -241,7 +241,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         ) : null}
                     </Row>
                 </ProForm>
-            </div>
+            </ProContainerItem>
         </ConfigProvider>
     );
 };

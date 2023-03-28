@@ -1,18 +1,10 @@
-.pro-workflow {
+.pro-workflow.pro-container-item {
     height: 56px;
     min-height: 56px;
-    padding: 14px;
-    background-color: #fff;
-    border-radius: 8px;
-    border: 1px solid #f0f0f0;
 
-    &.pro-workflow-transparent {
+    &.pro-container-item-transparent {
         min-height: 28px;
-        padding: 0;
         height: 28px;
-        background-color: transparent;
-        border-radius: 0;
-        border: none;
     }
 
     .pro-workflow-steps.pro-workflow-steps-small {

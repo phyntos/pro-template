@@ -1,17 +1,19 @@
-import { Card, Col } from 'antd';
+import { Col, ConfigProvider } from 'antd';
 import React, { useMemo, useState } from 'react';
 import ProFormCard, { useProFormCard } from '../components/ProFormCard/ProFormCard';
-import { ProHeader, ProTabGroup, ProWorkflow } from '../pro-template';
+import { ProContainerItem, ProHeader, ProTabGroup, ProWorkflow, useProContainer } from '../pro-template';
 
 const DevItem = () => {
     const [tab, setTab] = useState<'dev' | 'prod'>('dev');
+    const [transparent, setTransparent] = useState(false);
+    useProContainer({ title: 'dev', transparent: !transparent });
 
     const data = useMemo(() => ({ dev_select: tab, dev_text: 123 }), [tab]);
 
     const [form, actions] = useProFormCard({ id: 'DEV', data, onUpdate: async (data) => console.log(data) });
 
     return (
-        <>
+        <ConfigProvider prefixCls='dev'>
             <ProHeader
                 back
                 title='DEV'
@@ -33,21 +35,33 @@ const DevItem = () => {
                     console.log('UPDATED');
                 }}
                 extraCols={
-                    <Col>
-                        <ProTabGroup
-                            tab={tab}
-                            onTabChange={setTab}
-                            tabEnum={{
-                                dev: 'DEV',
-                                prod: 'PROD',
-                            }}
-                        />
-                    </Col>
+                    <>
+                        <Col>
+                            <ProTabGroup
+                                tab={tab}
+                                onTabChange={setTab}
+                                tabEnum={{
+                                    dev: 'DEV',
+                                    prod: 'PROD',
+                                }}
+                            />
+                        </Col>
+                        <Col>
+                            <ProTabGroup
+                                tab={JSON.stringify(transparent)}
+                                onTabChange={(bool) => setTransparent(JSON.parse(bool))}
+                                tabEnum={{
+                                    true: 'ON',
+                                    false: 'OFF',
+                                }}
+                            />
+                        </Col>
+                    </>
                 }
-                transparent
+                transparent={transparent}
             />
             <ProWorkflow
-                // transparent
+                transparent={transparent}
                 workflows={[
                     { active: true, done: false, order: 1, slaMinutes: 0, statusCode: 'CODE', statusName: 'Status 1' },
                     {
@@ -76,9 +90,9 @@ const DevItem = () => {
                     },
                 ]}
             />
-            <Card>
+            <ProContainerItem transparent={transparent}>
                 <ProFormCard
-                    // transparent
+                    transparent={transparent}
                     form={form}
                     actions={actions}
                     submitter={{ position: 'bottom' }}
@@ -105,7 +119,7 @@ const DevItem = () => {
                     ]}
                 />
                 <ProFormCard
-                    // transparent
+                    transparent={transparent}
                     form={form}
                     actions={actions}
                     submitter={{ position: 'bottom' }}
@@ -131,8 +145,8 @@ const DevItem = () => {
                         },
                     ]}
                 />
-            </Card>
-        </>
+            </ProContainerItem>
+        </ConfigProvider>
     );
 };
 

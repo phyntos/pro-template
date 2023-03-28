@@ -1,18 +1,10 @@
-.pro-header {
+.pro-header.pro-container-item {
     height: 60px;
     min-height: 60px;
-    padding: 0 14px;
-    background-color: #fff;
-    border-radius: 8px;
-    border: 1px solid #f0f0f0;
 
-    &.pro-header-transparent {
+    &.pro-container-item-transparent {
         height: 36px;
         min-height: 36px;
-        background-color: transparent;
-        padding: 0;
-        border-radius: 0;
-        border: none;
     }
 
     > .pro-header-row {

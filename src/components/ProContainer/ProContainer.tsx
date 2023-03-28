@@ -34,14 +34,22 @@ type ProContainerMenuItem<ItemKey extends string, Roles extends string> =
     | ProContainerMenuItemWithPath<ItemKey, Roles>
     | ProContainerMenuItemWithChildren<ItemKey, Roles>;
 
-export const ProContainerContext = React.createContext<{ title: string; setTitle: (title: string) => void }>({
+export const ProContainerContext = React.createContext<{
+    title: string;
+    setTitle: (title: string) => void;
+    transparent: boolean;
+    setTransparent: (title: boolean) => void;
+}>({
     title: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     setTitle: () => {},
+    transparent: false,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    setTransparent: () => {},
 });
 
-export const useProContainerTitle = (title: string) => {
-    const { setTitle } = useContext(ProContainerContext);
+export const useProContainer = ({ title, transparent }: { title: string; transparent: boolean }) => {
+    const { setTitle, setTransparent } = useContext(ProContainerContext);
 
     useEffect(() => {
         setTitle(title);
@@ -50,6 +58,14 @@ export const useProContainerTitle = (title: string) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title]);
+
+    useEffect(() => {
+        setTransparent(transparent);
+        return () => {
+            setTransparent(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [transparent]);
 };
 
 type ProFormCardContextType = { id: string; form: FormInstance<any>; actions: ProFormCardActions<any> };
@@ -150,6 +166,26 @@ const filterMenuItems = <ItemKey extends string, Roles extends string>(
         });
 };
 
+export const ProContainerItem = ({
+    children,
+    className,
+    transparent,
+}: {
+    children?: React.ReactNode;
+    className?: string;
+    transparent?: boolean;
+}) => {
+    return (
+        <div
+            className={['pro-container-item', className, transparent && 'pro-container-item-transparent']
+                .filter(Boolean)
+                .join(' ')}
+        >
+            {children}
+        </div>
+    );
+};
+
 const ProContainer = <ItemKey extends string, Roles extends string>({
     menuItems,
     onLogout,
@@ -158,7 +194,6 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     profileKey,
     logo,
     userData,
-    transparentContent,
 }: {
     menuItems: ProContainerMenuItem<ItemKey, Roles>[];
     onLogout?: () => void;
@@ -171,10 +206,10 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
         fullName?: string | null;
         roleNames: Record<Roles, string>;
     };
-    transparentContent?: boolean;
 }) => {
     const [activeKey, setActiveKey] = useState<ItemKey>(defaultKey);
     const [title, setTitle] = useState('');
+    const [transparent, setTransparent] = useState(false);
     const [forms, setForms] = useState<ProFormCardContextType[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
@@ -229,7 +264,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     return (
         <ConfigProvider prefixCls='pro-container' iconPrefixCls='pro-container-icon'>
             <ProFormCardContext.Provider value={{ forms, setForms }}>
-                <ProContainerContext.Provider value={{ title, setTitle }}>
+                <ProContainerContext.Provider value={{ title, setTitle, transparent, setTransparent }}>
                     <Layout className='pro-container-main-layout'>
                         <Sider trigger={null} collapsible collapsed={collapsed}>
                             <div className='pro-container-logo'>{logo?.(collapsed ? 'mini' : 'normal')}</div>
@@ -288,7 +323,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                     )}
                                 </Space>
                             </Header>
-                            <Content className={transparentContent ? 'pro-container-transparent-content' : undefined}>
+                            <Content className={transparent ? 'pro-container-transparent-content' : undefined}>
                                 <Routes>
                                     {items.map((item) => {
                                         if (item.children) {

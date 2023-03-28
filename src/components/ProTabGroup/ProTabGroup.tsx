@@ -43,7 +43,7 @@ const ProTabGroup = <T extends string>({
     if (hiddenTabEnum) tabOptions = tabOptions.filter((option) => !hiddenTabEnum[option.value]);
     if (showTabs) tabOptions = tabOptions.filter((option) => showTabs?.includes(option.value));
 
-    const classNames = ['pro-container-item'];
+    const classNames = [];
     if (className) classNames.push(className);
 
     return (

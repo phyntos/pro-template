@@ -1,15 +1,6 @@
-.pro-form-card {
-    padding: 16px;
+.pro-form-card.pro-container-item {
     padding-bottom: 0;
-    border: 1px solid #f0f0f0;
-    border-radius: 6px;
-    background-color: #fff;
-    &.pro-form-card-transparent {
-        border: none;
-        padding: 0;
-        border-radius: 0;
-        background-color: transparent;
-        margin-bottom: 0;
+    &.pro-container-item-transparent {
         .pro-form-card-submitter {
             margin-bottom: 0;
         }
@@ -21,7 +12,7 @@
 
     .pro-form-card-submitter {
         text-align: right;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         &.pro-form-card-submitter-bottom {
             text-align: left;
         }
