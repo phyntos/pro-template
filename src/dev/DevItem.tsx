@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import { Card, Col } from 'antd';
 import React, { useMemo, useState } from 'react';
 import ProFormCard, { useProFormCard } from '../components/ProFormCard/ProFormCard';
 import { ProHeader, ProTabGroup, ProWorkflow } from '../pro-template';
@@ -11,7 +11,7 @@ const DevItem = () => {
     const [form, actions] = useProFormCard({ id: 'DEV', data, onUpdate: async (data) => console.log(data) });
 
     return (
-        <div>
+        <>
             <ProHeader
                 back
                 title='DEV'
@@ -32,10 +32,22 @@ const DevItem = () => {
                 onReload={() => {
                     console.log('UPDATED');
                 }}
+                extraCols={
+                    <Col>
+                        <ProTabGroup
+                            tab={tab}
+                            onTabChange={setTab}
+                            tabEnum={{
+                                dev: 'DEV',
+                                prod: 'PROD',
+                            }}
+                        />
+                    </Col>
+                }
                 transparent
             />
             <ProWorkflow
-                transparent
+                // transparent
                 workflows={[
                     { active: true, done: false, order: 1, slaMinutes: 0, statusCode: 'CODE', statusName: 'Status 1' },
                     {
@@ -65,16 +77,35 @@ const DevItem = () => {
                 ]}
             />
             <Card>
-                <ProTabGroup
-                    tab={tab}
-                    onTabChange={setTab}
-                    tabEnum={{
-                        dev: 'DEV',
-                        prod: 'PROD',
-                    }}
+                <ProFormCard
+                    // transparent
+                    form={form}
+                    actions={actions}
+                    submitter={{ position: 'bottom' }}
+                    span={8}
+                    fields={[
+                        {
+                            type: 'text',
+                            props: {
+                                label: 'DEV Text',
+                                name: 'dev_text',
+                            },
+                        },
+                        {
+                            type: 'select',
+                            props: {
+                                label: 'DEV Select',
+                                name: 'dev_select',
+                                valueEnum: {
+                                    dev: 'DEV',
+                                    prod: 'PROD',
+                                },
+                            },
+                        },
+                    ]}
                 />
                 <ProFormCard
-                    transparent
+                    // transparent
                     form={form}
                     actions={actions}
                     submitter={{ position: 'bottom' }}
@@ -101,7 +132,7 @@ const DevItem = () => {
                     ]}
                 />
             </Card>
-        </div>
+        </>
     );
 };
 

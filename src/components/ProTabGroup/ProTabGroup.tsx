@@ -43,15 +43,17 @@ const ProTabGroup = <T extends string>({
     if (hiddenTabEnum) tabOptions = tabOptions.filter((option) => !hiddenTabEnum[option.value]);
     if (showTabs) tabOptions = tabOptions.filter((option) => showTabs?.includes(option.value));
 
+    const classNames = ['pro-container-item'];
+    if (className) classNames.push(className);
+
     return (
         <Radio.Group
             defaultValue={defaultTab}
             value={tab}
-            style={{ marginBottom: 16 }}
             onChange={handleRadioChange}
             optionType='button'
             options={tabOptions}
-            className={className}
+            className={classNames.join(' ')}
         />
     );
 };

@@ -262,7 +262,7 @@ const ProHeader = ({
 
     return (
         <ConfigProvider prefixCls='pro-header'>
-            <div className={'pro-header' + (transparent ? ' pro-header-transparent' : '')}>
+            <div className={'pro-header pro-container-item' + (transparent ? ' pro-header-transparent' : '')}>
                 <Row align='middle' justify='space-between' wrap={false}>
                     <Col {...titleColProps}>
                         <Space size={16}>

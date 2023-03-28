@@ -137,6 +137,14 @@
             }
         }
     }
+
+    .pro-container-layout-content > .pro-container-item,
+    .pro-container-card-body > .pro-container-item {
+        margin-bottom: 16px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 
 body,

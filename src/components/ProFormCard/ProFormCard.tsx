@@ -192,15 +192,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                 <Space>
                     <ProButton
                         onAsyncClick={() => actions.saveForm()}
-                        icon={
-                            submitter?.saveIcon ? (
-                                submitter?.saveIcon === false ? undefined : (
-                                    submitter?.saveIcon
-                                )
-                            ) : (
-                                <SaveOutlined />
-                            )
-                        }
+                        icon={submitter?.saveIcon === false ? undefined : submitter?.saveIcon || <SaveOutlined />}
                     >
                         {submitter?.saveText || 'Сохранить'}
                     </ProButton>
@@ -209,13 +201,9 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                             type='default'
                             onClick={() => actions.setForm()}
                             icon={
-                                submitter?.resetIcon ? (
-                                    submitter?.resetIcon === false ? undefined : (
-                                        submitter?.resetIcon
-                                    )
-                                ) : (
-                                    <RollbackOutlined />
-                                )
+                                submitter?.resetIcon === false
+                                    ? undefined
+                                    : submitter?.resetIcon || <RollbackOutlined />
                             }
                         >
                             {submitter?.resetText || 'Отмена'}
@@ -238,7 +226,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
 
     return (
         <ConfigProvider prefixCls='pro-form-card'>
-            <div className={'pro-form-card' + (transparent ? ' pro-form-card-transparent' : '')}>
+            <div className={'pro-form-card pro-container-item' + (transparent ? ' pro-form-card-transparent' : '')}>
                 <ProForm submitter={false} form={form}>
                     <Row gutter={[10, 10]}>
                         {childList.map((item, index) => {

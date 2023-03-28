@@ -22,7 +22,7 @@ const ProWorkflow = <StatusCodes extends string>({
 }) => {
     return (
         <ConfigProvider prefixCls='pro-workflow'>
-            <div className={'pro-workflow' + (transparent ? ' pro-workflow-transparent' : '')}>
+            <div className={'pro-workflow pro-container-item' + (transparent ? ' pro-workflow-transparent' : '')}>
                 <Steps
                     size='small'
                     current={workflows?.findIndex((workflow) => workflow.active)}
