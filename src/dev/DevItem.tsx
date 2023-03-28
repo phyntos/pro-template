@@ -106,10 +106,10 @@ const DevItem = () => {
             />
             <ProContainerItem transparent={transparent}>
                 <ProFormCard
-                    transparent
+                    title='DEV'
+                    transparent={transparent}
                     form={form}
                     actions={actions}
-                    submitter={{ position: 'bottom' }}
                     span={8}
                     fields={[
                         {
@@ -133,11 +133,77 @@ const DevItem = () => {
                     ]}
                 />
                 <ProFormCard
-                    transparent
+                    transparent={transparent}
                     form={form}
                     actions={actions}
-                    submitter={{ position: 'bottom' }}
                     span={8}
+                    fields={[
+                        {
+                            type: 'text',
+                            props: {
+                                label: 'DEV Text',
+                                name: 'dev_text',
+                            },
+                        },
+                        {
+                            type: 'select',
+                            props: {
+                                label: 'DEV Select',
+                                name: 'dev_select',
+                                valueEnum: {
+                                    dev: 'DEV',
+                                    prod: 'PROD',
+                                },
+                            },
+                        },
+                        {
+                            type: 'item',
+                            title: 'DEV_CARD',
+                            children: [
+                                {
+                                    type: 'text',
+                                    props: {
+                                        label: 'DEV Text',
+                                        name: 'dev_text',
+                                    },
+                                },
+                                {
+                                    type: 'select',
+                                    props: {
+                                        label: 'DEV Select',
+                                        name: 'dev_select',
+                                        valueEnum: {
+                                            dev: 'DEV',
+                                            prod: 'PROD',
+                                        },
+                                    },
+                                },
+                            ],
+                            span: 16,
+                        },
+                        {
+                            type: 'submitter',
+                        },
+                        {
+                            type: 'select',
+                            props: {
+                                label: 'DEV Select',
+                                name: 'dev_select',
+                                valueEnum: {
+                                    dev: 'DEV',
+                                    prod: 'PROD',
+                                },
+                            },
+                        },
+                    ]}
+                />
+                <ProFormCard
+                    titleExtraRender={<>123</>}
+                    transparent={transparent}
+                    form={form}
+                    actions={actions}
+                    span={8}
+                    submitter={{ position: 'bottom', extraRender: <>asd</> }}
                     fields={[
                         {
                             type: 'text',

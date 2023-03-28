@@ -97,7 +97,33 @@ export type ProFormCardNullField = {
     type: 'null';
 };
 
+export type ProFormCardSubmitterField = {
+    type: 'submitter';
+};
+
+export type ProFormCardItemField = {
+    type: 'item';
+    children: ProFormCardChildField[];
+    transparent?: boolean;
+    title?: React.ReactNode;
+    titleExtraRender?: React.ReactNode;
+};
+
 type ProFormCardField = (
+    | ProFormCardSelectField
+    | ProFormCardDateTimeField
+    | ProFormCardRenderField
+    | ProFormCardNullField
+    | ProFormCardTextField
+    | ProFormCardPasswordField
+    | ProFormCardItemField
+    | ProFormCardSubmitterField
+) & {
+    hidden?: boolean;
+    span?: number | string;
+};
+
+type ProFormCardChildField = (
     | ProFormCardSelectField
     | ProFormCardDateTimeField
     | ProFormCardRenderField
@@ -106,6 +132,7 @@ type ProFormCardField = (
     | ProFormCardPasswordField
 ) & {
     hidden?: boolean;
+    span?: number | string;
 };
 
 export type ProFormCardActions<FormVM extends Record<string, any>> = {
@@ -122,6 +149,8 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     span = 6,
     hidden,
     transparent,
+    title,
+    titleExtraRender,
 }: {
     form: FormInstance<FormVM>;
     actions: {
@@ -138,57 +167,101 @@ const ProFormCard = <FormVM extends Record<string, any>>({
               saveIcon?: false | React.ReactNode;
               resetIcon?: false | React.ReactNode;
               position?: 'top' | 'bottom';
+              extraRender?: React.ReactNode;
           };
-    span?: 6 | 12 | 3 | 8 | 4 | 1 | 2;
+    span?: number | string;
     hidden?: boolean;
     transparent?: boolean;
+    title?: React.ReactNode;
+    titleExtraRender?: React.ReactNode;
 }) => {
     let childList: React.ReactNode[] = [];
 
-    if (fields?.length) {
-        childList = fields
-            .filter((x) => !x.hidden)
-            .map((field) => {
-                switch (field.type) {
-                    case 'select':
-                        return (
-                            <ProFormSelect {...field.props} disabled={submitter === false || field.props.disabled} />
-                        );
-                    case 'date':
-                        return (
-                            <ProFormDatePicker
-                                {...field.props}
-                                disabled={submitter === false || field.props.disabled}
-                                fieldProps={{ ...field.props.fieldProps, format: 'DD.MM.YYYY' }}
-                            />
-                        );
-                    case 'text':
-                        return <ProFormText {...field.props} disabled={submitter === false || field.props.disabled} />;
-                    case 'password':
-                        return (
-                            <ProFormText.Password
-                                {...field.props}
-                                disabled={submitter === false || field.props.disabled}
-                            />
-                        );
-                    case 'render':
-                        return field.render();
-                    case 'null':
-                        return null;
+    const getField = (field: ProFormCardField): React.ReactNode => {
+        switch (field.type) {
+            case 'select':
+                return <ProFormSelect {...field.props} disabled={submitter === false || field.props.disabled} />;
+            case 'date':
+                return (
+                    <ProFormDatePicker
+                        {...field.props}
+                        disabled={submitter === false || field.props.disabled}
+                        fieldProps={{ ...field.props.fieldProps, format: 'DD.MM.YYYY' }}
+                    />
+                );
+            case 'text':
+                return <ProFormText {...field.props} disabled={submitter === false || field.props.disabled} />;
+            case 'password':
+                return <ProFormText.Password {...field.props} disabled={submitter === false || field.props.disabled} />;
+            case 'render':
+                return field.render();
+            case 'null':
+                return null;
+            case 'submitter':
+                return submitterButtons;
+            case 'item':
+                return (
+                    <ProContainerItem transparent={field.transparent}>
+                        {getFieldsRow({
+                            title: field.title,
+                            titleExtraRender: field.titleExtraRender,
+                            childList: getFields(field.children),
+                        })}
+                    </ProContainerItem>
+                );
 
-                    default:
-                        return null;
-                }
+            default:
+                return null;
+        }
+    };
+
+    const getFields = (fields: ProFormCardField[]): React.ReactNode[] => {
+        return fields
+            .filter((x) => !x.hidden)
+            .map((item, index) => {
+                return (
+                    <Col key={index} span={item.span || span}>
+                        {getField(item)}
+                    </Col>
+                );
             });
-    }
+    };
+
+    const getFieldsRow = ({
+        childList,
+        title,
+        titleExtraRender,
+    }: {
+        title?: React.ReactNode;
+        titleExtraRender?: React.ReactNode;
+        childList: React.ReactNode[];
+    }) => {
+        return (
+            <Row gutter={[14, 0]}>
+                {(title || titleExtraRender) && (
+                    <Col span={24}>
+                        <div className='pro-form-card-title'>
+                            {title ? <div className='pro-form-card-title-text'>{title}</div> : null}
+                            {titleExtraRender}
+                            {isSubmitterTop ? submitterButtons : null}
+                        </div>
+                    </Col>
+                )}
+                {childList}
+                {isSubmitterBottom ? <Col span={24}>{submitterButtons}</Col> : null}
+            </Row>
+        );
+    };
+
+    const isSubmitterField = submitter !== false && fields?.some((x) => x.type === 'submitter');
+
+    const isSubmitterTop =
+        !isSubmitterField && submitter !== false && (!submitter?.position || submitter.position === 'top');
+    const isSubmitterBottom = !isSubmitterField && submitter !== false && submitter?.position === 'bottom';
+
     const submitterButtons =
         submitter !== false ? (
-            <div
-                className={
-                    'pro-form-card-submitter' +
-                    (submitter?.position === 'bottom' ? ' pro-form-card-submitter-bottom' : '')
-                }
-            >
+            <div className={'pro-form-card-submitter' + (isSubmitterBottom ? ' pro-form-card-submitter-bottom' : '')}>
                 <Space>
                     <ProButton
                         onAsyncClick={() => actions.saveForm()}
@@ -209,17 +282,13 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                             {submitter?.resetText || 'Отмена'}
                         </ProButton>
                     )}
+                    {submitter?.extraRender}
                 </Space>
             </div>
         ) : null;
 
-    if (submitter !== false && (!submitter?.position || submitter.position === 'top')) {
-        const spanDivider = 24 / span;
-
-        for (let index = 0; index < spanDivider; index++) {
-            if (childList.length < index) childList.push(null);
-        }
-        childList.splice(spanDivider - 1, 0, submitterButtons);
+    if (fields?.length) {
+        childList = getFields(fields);
     }
 
     if (hidden) return null;
@@ -228,18 +297,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         <ConfigProvider prefixCls='pro-form-card'>
             <ProContainerItem className='pro-form-card' transparent={transparent}>
                 <ProForm submitter={false} form={form}>
-                    <Row gutter={[10, 10]}>
-                        {childList.map((item, index) => {
-                            return (
-                                <Col key={index} span={span}>
-                                    {item}
-                                </Col>
-                            );
-                        })}
-                        {submitter !== false && submitter?.position === 'bottom' ? (
-                            <Col span={24}>{submitterButtons}</Col>
-                        ) : null}
-                    </Row>
+                    {getFieldsRow({ childList, title, titleExtraRender })}
                 </ProForm>
             </ProContainerItem>
         </ConfigProvider>

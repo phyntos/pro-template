@@ -10,11 +10,30 @@
         width: 100%;
     }
 
+    .pro-container-item {
+        padding-bottom: 0;
+        margin-bottom: 14px;
+    }
+
     .pro-form-card-submitter {
         text-align: right;
         margin-bottom: 14px;
         &.pro-form-card-submitter-bottom {
             text-align: left;
+        }
+    }
+    .pro-form-card-title {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        .pro-form-card-title-text {
+            color: rgba(0, 0, 0, 0.88);
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .pro-form-card-submitter {
+            margin-bottom: 0;
         }
     }
 }
