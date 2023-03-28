@@ -1,6 +1,6 @@
 import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { FormInstance } from '@ant-design/pro-components';
-import { Breadcrumb, ConfigProvider, Layout, Menu, Space, Tooltip } from 'antd';
+import { Breadcrumb, ConfigProvider, Layout, Menu, Space, Spin, Tooltip } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -39,6 +39,8 @@ export const ProContainerContext = React.createContext<{
     setTitle: (title: string) => void;
     transparent: boolean;
     setTransparent: (title: boolean) => void;
+    loading: boolean;
+    setLoading: (title: boolean) => void;
 }>({
     title: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -46,10 +48,21 @@ export const ProContainerContext = React.createContext<{
     transparent: false,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     setTransparent: () => {},
+    loading: false,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    setLoading: () => {},
 });
 
-export const useProContainer = ({ title = '', transparent = false }: { title?: string; transparent?: boolean }) => {
-    const { setTitle, setTransparent } = useContext(ProContainerContext);
+export const useProContainer = ({
+    title = '',
+    transparent = false,
+    loading = false,
+}: {
+    title?: string;
+    transparent?: boolean;
+    loading?: boolean;
+}) => {
+    const { setTitle, setTransparent, setLoading } = useContext(ProContainerContext);
 
     useEffect(() => {
         setTitle(title);
@@ -66,6 +79,14 @@ export const useProContainer = ({ title = '', transparent = false }: { title?: s
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transparent]);
+
+    useEffect(() => {
+        setLoading(loading);
+        return () => {
+            setLoading(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading]);
 };
 
 type ProFormCardContextType = { id: string; form: FormInstance<any>; actions: ProFormCardActions<any> };
@@ -210,6 +231,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     const [activeKey, setActiveKey] = useState<ItemKey>(defaultKey);
     const [title, setTitle] = useState('');
     const [transparent, setTransparent] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [forms, setForms] = useState<ProFormCardContextType[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
@@ -264,7 +286,9 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     return (
         <ConfigProvider prefixCls='pro-container' iconPrefixCls='pro-container-icon'>
             <ProFormCardContext.Provider value={{ forms, setForms }}>
-                <ProContainerContext.Provider value={{ title, setTitle, transparent, setTransparent }}>
+                <ProContainerContext.Provider
+                    value={{ title, setTitle, transparent, setTransparent, loading, setLoading }}
+                >
                     <Layout className='pro-container-main-layout'>
                         <Sider trigger={null} collapsible collapsed={collapsed}>
                             <div className='pro-container-logo'>{logo?.(collapsed ? 'mini' : 'normal')}</div>
@@ -323,26 +347,30 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                     )}
                                 </Space>
                             </Header>
-                            <Content className={transparent ? 'pro-container-transparent-content' : undefined}>
-                                <Routes>
-                                    {items.map((item) => {
-                                        if (item.children) {
-                                            return (
-                                                <>
-                                                    {item.children.map((childItem) => (
-                                                        <Route
-                                                            key={childItem.key}
-                                                            path={childItem.path}
-                                                            element={childItem.element}
-                                                        />
-                                                    ))}
-                                                </>
-                                            );
-                                        }
-                                        return <Route key={item.key} path={item.path} element={item.element} />;
-                                    })}
-                                    {defaultPath && <Route path='*' element={<Navigate to={defaultPath} />} />}
-                                </Routes>
+                            <Content>
+                                <Spin spinning={loading} className='pro-container-content-spin'>
+                                    <ProContainerItem className='pro-container-content' transparent={transparent}>
+                                        <Routes>
+                                            {items.map((item) => {
+                                                if (item.children) {
+                                                    return (
+                                                        <>
+                                                            {item.children.map((childItem) => (
+                                                                <Route
+                                                                    key={childItem.key}
+                                                                    path={childItem.path}
+                                                                    element={childItem.element}
+                                                                />
+                                                            ))}
+                                                        </>
+                                                    );
+                                                }
+                                                return <Route key={item.key} path={item.path} element={item.element} />;
+                                            })}
+                                            {defaultPath && <Route path='*' element={<Navigate to={defaultPath} />} />}
+                                        </Routes>
+                                    </ProContainerItem>
+                                </Spin>
                             </Content>
                         </Layout>
                     </Layout>

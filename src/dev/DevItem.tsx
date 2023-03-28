@@ -6,7 +6,8 @@ import { ProContainerItem, ProHeader, ProTabGroup, ProWorkflow, useProContainer 
 const DevItem = () => {
     const [tab, setTab] = useState<'dev' | 'prod'>('dev');
     const [transparent, setTransparent] = useState(false);
-    useProContainer({ title: 'dev', transparent: !transparent });
+    const [loading, setLoading] = useState(false);
+    useProContainer({ title: 'dev', transparent: !transparent, loading });
 
     const data = useMemo(() => ({ dev_select: tab, dev_text: 123 }), [tab]);
 
@@ -46,7 +47,10 @@ const DevItem = () => {
                     },
                 ]}
                 onReload={() => {
-                    console.log('UPDATED');
+                    setLoading(true);
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 1200);
                 }}
                 extraCols={
                     <>
