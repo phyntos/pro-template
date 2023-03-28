@@ -106,7 +106,7 @@ const DevItem = () => {
             />
             <ProContainerItem transparent={transparent}>
                 <ProFormCard
-                    title='DEV'
+                    // title='DEV'
                     transparent={transparent}
                     form={form}
                     actions={actions}
@@ -181,9 +181,9 @@ const DevItem = () => {
                             ],
                             span: 16,
                         },
-                        {
-                            type: 'submitter',
-                        },
+                        // {
+                        //     type: 'submitter',
+                        // },
                         {
                             type: 'select',
                             props: {

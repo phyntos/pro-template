@@ -206,6 +206,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                             title: field.title,
                             titleExtraRender: field.titleExtraRender,
                             childList: getFields(field.children),
+                            hideSubmitter: true,
                         })}
                     </ProContainerItem>
                 );
@@ -231,10 +232,12 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         childList,
         title,
         titleExtraRender,
+        hideSubmitter,
     }: {
         title?: React.ReactNode;
         titleExtraRender?: React.ReactNode;
         childList: React.ReactNode[];
+        hideSubmitter?: boolean;
     }) => {
         return (
             <Row gutter={[14, 0]}>
@@ -243,21 +246,21 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         <div className='pro-form-card-title'>
                             {title ? <div className='pro-form-card-title-text'>{title}</div> : null}
                             {titleExtraRender}
-                            {isSubmitterTop ? submitterButtons : null}
+                            {!hideSubmitter && isSubmitterTop ? submitterButtons : null}
                         </div>
                     </Col>
                 )}
                 {childList}
-                {isSubmitterBottom ? <Col span={24}>{submitterButtons}</Col> : null}
+                {!hideSubmitter && isSubmitterBottom ? <Col span={24}>{submitterButtons}</Col> : null}
             </Row>
         );
     };
 
     const isSubmitterField = submitter !== false && fields?.some((x) => x.type === 'submitter');
 
-    const isSubmitterTop =
-        !isSubmitterField && submitter !== false && (!submitter?.position || submitter.position === 'top');
-    const isSubmitterBottom = !isSubmitterField && submitter !== false && submitter?.position === 'bottom';
+    const isSubmitterTop = !isSubmitterField && submitter !== false && submitter?.position === 'top';
+    const isSubmitterBottom =
+        !isSubmitterField && submitter !== false && (!submitter?.position || submitter?.position === 'bottom');
 
     const submitterButtons =
         submitter !== false ? (
