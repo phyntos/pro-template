@@ -41,7 +41,7 @@ const DevItem = () => {
                                 label: 'DEV',
                                 value: 'dev',
                                 key: 'dev',
-                                children: [{ label: 'DEV', value: 'dev', key: 'dev', children: [] }],
+                                children: [{ label: 'DEV', value: 'dev', key: 'dev', hidden: true }],
                             },
                         ],
                     },

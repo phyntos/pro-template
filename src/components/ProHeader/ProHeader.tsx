@@ -183,7 +183,7 @@ export const InfoItem = ({
 }) => {
     if (item.hidden) return null;
     const childInfo =
-        item.children && item.children.length ? (
+        item.children && item.children.length && item.children.some((child) => !child.hidden) ? (
             <Popover
                 content={
                     <Space size={16}>
