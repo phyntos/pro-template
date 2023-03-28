@@ -9,7 +9,7 @@ const DevItem = () => {
     const [loading, setLoading] = useState(false);
     useProContainer({ title: 'dev', transparent: !transparent, loading });
 
-    const data = useMemo(() => ({ dev_select: tab, dev_text: 123 }), [tab]);
+    const data = useMemo(() => ({ dev_select: tab, dev_text: 123, dev_number: 1123 }), [tab]);
 
     const [form, actions] = useProFormCard({ id: 'DEV', data, onUpdate: async (data) => console.log(data) });
 
@@ -122,6 +122,14 @@ const DevItem = () => {
                             props: {
                                 label: 'DEV Text',
                                 name: 'dev_text',
+                            },
+                        },
+                        {
+                            type: 'number',
+                            min: -1,
+                            props: {
+                                label: 'DEV Number',
+                                name: 'dev_number',
                             },
                         },
                         {

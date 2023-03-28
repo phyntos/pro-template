@@ -29,20 +29,30 @@ export const deepComparison = <T>(first: T, second: T) => {
     return true;
 };
 
+const toFixed = (num: string, fixed: number) => {
+    const re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
+    return num.match(re)?.[0] || '';
+};
+
+export type NumberNormalizeArgs = {
+    isInteger?: boolean;
+    isPositive?: boolean;
+    min?: number;
+    max?: number;
+    fractionDigits?: number;
+};
+
 export const numberNormalize =
     ({
         isInteger,
         isPositive,
         min,
         max,
-    }: {
-        isInteger?: boolean;
-        isPositive?: boolean;
-        min?: number;
-        max?: number;
-    }): ((value: string, prevValue: string) => any) =>
+        fractionDigits,
+    }: NumberNormalizeArgs): ((value: string, prevValue: string) => any) =>
     (value: string, prevValue) => {
         if (typeof value === 'undefined') return undefined;
+        value = value.replace(' ', '');
         if (!isInteger) value = value.replace(',', '.');
         else {
             value = value.replace(',', '');
@@ -52,22 +62,36 @@ export const numberNormalize =
             value = value.replace('-', '');
         }
 
-        let number = Number(value);
-        if (Number.isNaN(number)) number = Number(prevValue);
-        if (Number.isNaN(number)) number = 0;
+        let numberState: 'current' | 'prev' | 'zero' = 'current';
 
-        const isMin = typeof min !== 'undefined' && number > min;
-        const isMax = typeof max !== 'undefined' && number > max;
+        if (Number.isNaN(Number(value))) {
+            numberState = 'prev';
+            if (Number.isNaN(Number(prevValue))) numberState = 'zero';
+        }
 
-        if (isMin) number = min;
-        if (isMax) number = max;
-        if (isMax && isMin) number = 0;
+        let number = numberState === 'current' ? value : numberState === 'prev' ? prevValue : '0';
+
+        const isMin = typeof min !== 'undefined' && Number(number) < min;
+        const isMax = typeof max !== 'undefined' && Number(number) > max;
+
+        if (isMin) number = min.toString();
+        if (isMax) number = max.toString();
+        if (isMax && isMin) number = '0';
 
         let numberValue = String(number);
 
         if (!isInteger && value[value.length - 1] === '.' && !numberValue.includes('.')) {
             numberValue += '.';
         }
+
+        if (
+            fractionDigits &&
+            fractionDigits > 0 &&
+            numberValue.includes('.') &&
+            numberValue.split('.')[1].length > fractionDigits
+        )
+            numberValue = toFixed(number, fractionDigits);
+
         if (!isPositive) {
             if (value === '0-') {
                 numberValue = '-';

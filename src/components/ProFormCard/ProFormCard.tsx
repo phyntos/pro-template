@@ -12,7 +12,7 @@ import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
 import { InputProps, PasswordProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { deepComparison } from '../../functions';
+import { deepComparison, numberNormalize, NumberNormalizeArgs } from '../../functions';
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
@@ -83,6 +83,11 @@ export type ProFormCardTextField = {
     props: ProFormFieldItemProps<InputProps, InputRef>;
 };
 
+export type ProFormCardNumberField = {
+    type: 'number';
+    props: Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>;
+} & NumberNormalizeArgs;
+
 export type ProFormCardPasswordField = {
     type: 'password';
     props: ProFormFieldItemProps<PasswordProps, InputRef>;
@@ -109,28 +114,21 @@ export type ProFormCardItemField = {
     titleExtraRender?: React.ReactNode;
 };
 
-type ProFormCardField = (
+type ProFormCardFieldCommon =
     | ProFormCardSelectField
     | ProFormCardDateTimeField
     | ProFormCardRenderField
     | ProFormCardNullField
     | ProFormCardTextField
-    | ProFormCardPasswordField
-    | ProFormCardItemField
-    | ProFormCardSubmitterField
-) & {
+    | ProFormCardNumberField
+    | ProFormCardPasswordField;
+
+type ProFormCardField = (ProFormCardFieldCommon | ProFormCardItemField | ProFormCardSubmitterField) & {
     hidden?: boolean;
     span?: number | string;
 };
 
-type ProFormCardChildField = (
-    | ProFormCardSelectField
-    | ProFormCardDateTimeField
-    | ProFormCardRenderField
-    | ProFormCardNullField
-    | ProFormCardTextField
-    | ProFormCardPasswordField
-) & {
+type ProFormCardChildField = ProFormCardFieldCommon & {
     hidden?: boolean;
     span?: number | string;
 };
@@ -193,6 +191,20 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                 );
             case 'text':
                 return <ProFormText {...field.props} disabled={submitter === false || field.props.disabled} />;
+            case 'number':
+                return (
+                    <ProFormText
+                        {...field.props}
+                        disabled={submitter === false || field.props.disabled}
+                        normalize={numberNormalize({
+                            isInteger: field.isInteger,
+                            isPositive: field.isPositive,
+                            max: field.max,
+                            min: field.min,
+                            fractionDigits: field.fractionDigits,
+                        })}
+                    />
+                );
             case 'password':
                 return <ProFormText.Password {...field.props} disabled={submitter === false || field.props.disabled} />;
             case 'render':

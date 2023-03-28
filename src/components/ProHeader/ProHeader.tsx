@@ -137,7 +137,7 @@ export const ProActionsDropdown = ({ items, icon }: { items: HeaderDropdownItem[
                         case 'number':
                             return (
                                 <ProFormText
-                                    normalize={numberNormalize({ isPositive: true })}
+                                    normalize={numberNormalize({ isPositive: true, fractionDigits: 2 })}
                                     label={field.label}
                                     placeholder={field.placeHolder || undefined}
                                     name={field.name}
