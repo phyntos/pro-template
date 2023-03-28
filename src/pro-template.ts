@@ -3,7 +3,7 @@ import ProContainer, {
     useProFormCardInstance,
     ProContainerItem,
 } from './components/ProContainer/ProContainer';
-import ProHeader from './components/ProHeader/ProHeader';
+import ProHeader, { ProActionsDropdown } from './components/ProHeader/ProHeader';
 import ProLogo from './components/ProLogo/ProLogo';
 import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import ProTabGroup from './components/ProTabGroup/ProTabGroup';
@@ -28,4 +28,5 @@ export {
     useProFormCard,
     useProFormCardInstance,
     ProContainerItem,
+    ProActionsDropdown,
 };

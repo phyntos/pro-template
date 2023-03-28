@@ -50,7 +50,7 @@ export type HeaderDropdownItem = {
     modalFields?: ModalField[];
 };
 
-export const ActionsDropdown = ({ items, icon }: { items: HeaderDropdownItem[]; icon?: React.ReactNode }) => {
+export const ProActionsDropdown = ({ items, icon }: { items: HeaderDropdownItem[]; icon?: React.ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [actionKey, setActionKey] = useState<string>('');
@@ -306,7 +306,7 @@ const ProHeader = ({
                         <Space className='actions-space'>
                             {onReload && <Button icon={<ReloadOutlined />} onClick={onReload} />}
                             {actions}
-                            {actionItems && <ActionsDropdown items={actionItems} />}
+                            {actionItems && <ProActionsDropdown items={actionItems} />}
                         </Space>
                     </Col>
                 </Row>
