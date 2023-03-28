@@ -17,6 +17,7 @@
 
     .pro-form-card-submitter {
         text-align: right;
+        flex: 1;
         margin-bottom: 14px;
         &.pro-form-card-submitter-bottom {
             text-align: left;
@@ -24,6 +25,7 @@
     }
     .pro-form-card-title {
         display: flex;
+        gap: 14px;
         justify-content: space-between;
         margin-bottom: 14px;
         .pro-form-card-title-text {

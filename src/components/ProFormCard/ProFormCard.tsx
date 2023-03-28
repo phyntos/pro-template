@@ -255,7 +255,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     }) => {
         return (
             <Row gutter={[14, 0]}>
-                {(title || titleExtraRender) && (
+                {(title || titleExtraRender || (!hideSubmitter && isSubmitterTop)) && (
                     <Col span={24}>
                         <div className='pro-form-card-title'>
                             {title ? <div className='pro-form-card-title-text'>{title}</div> : null}

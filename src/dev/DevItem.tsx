@@ -115,6 +115,7 @@ const DevItem = () => {
                     transparent={transparent}
                     form={form}
                     actions={actions}
+                    submitter={{ position: 'top' }}
                     span={8}
                     fields={[
                         {
@@ -213,6 +214,7 @@ const DevItem = () => {
                 <ProFormCard
                     titleExtraRender={<>123</>}
                     transparent={transparent}
+                    title='sad'
                     form={form}
                     actions={actions}
                     span={8}
