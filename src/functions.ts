@@ -102,3 +102,23 @@ export const numberNormalize =
         }
         return numberValue;
     };
+export type RegexNormalizeArgs = { regex?: RegExp | RegExp[]; toUpper?: boolean };
+
+export const regexNormalize =
+    ({ regex, toUpper }: RegexNormalizeArgs): ((value: string, prevValue: string) => any) =>
+    (value: string, prevValue) => {
+        if (typeof value === 'undefined') return undefined;
+        if (value === '') return '';
+        const inputValue = toUpper ? value.toUpperCase() : value;
+        const isIncorrect = inputValue.split('').some((char: any, index: number) => {
+            if (Array.isArray(regex)) {
+                return !char.match(regex[index]);
+            } else {
+                return !char.match(regex);
+            }
+        });
+
+        if (isIncorrect) return prevValue;
+
+        return inputValue;
+    };

@@ -12,7 +12,13 @@ import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
 import { InputProps, PasswordProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { deepComparison, numberNormalize, NumberNormalizeArgs } from '../../functions';
+import {
+    deepComparison,
+    numberNormalize,
+    NumberNormalizeArgs,
+    regexNormalize,
+    RegexNormalizeArgs,
+} from '../../functions';
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
@@ -88,6 +94,11 @@ export type ProFormCardNumberField = {
     props: Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>;
 } & NumberNormalizeArgs;
 
+export type ProFormCardRegExpField = {
+    type: 'regex';
+    props: Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>;
+} & RegexNormalizeArgs;
+
 export type ProFormCardPasswordField = {
     type: 'password';
     props: ProFormFieldItemProps<PasswordProps, InputRef>;
@@ -121,6 +132,7 @@ type ProFormCardFieldCommon =
     | ProFormCardNullField
     | ProFormCardTextField
     | ProFormCardNumberField
+    | ProFormCardRegExpField
     | ProFormCardPasswordField;
 
 type ProFormCardField = (ProFormCardFieldCommon | ProFormCardItemField | ProFormCardSubmitterField) & {
@@ -166,6 +178,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
               saveIcon?: false | React.ReactNode;
               resetIcon?: false | React.ReactNode;
               position?: 'top' | 'bottom';
+              validate?: boolean;
               extraRender?: React.ReactNode;
           };
     span?: number | string;
@@ -175,8 +188,6 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 }) => {
-    let childList: React.ReactNode[] = [];
-
     const getField = (field: ProFormCardField): React.ReactNode => {
         switch (field.type) {
             case 'select':
@@ -205,6 +216,17 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         })}
                     />
                 );
+            case 'regex':
+                return (
+                    <ProFormText
+                        {...field.props}
+                        disabled={submitter === false || field.props.disabled}
+                        normalize={regexNormalize({
+                            regex: field.regex,
+                            toUpper: field.toUpper,
+                        })}
+                    />
+                );
             case 'password':
                 return <ProFormText.Password {...field.props} disabled={submitter === false || field.props.disabled} />;
             case 'render':
@@ -219,7 +241,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         {getFieldsRow({
                             title: field.title,
                             titleExtraRender: field.titleExtraRender,
-                            childList: getFields(field.children),
+                            children: getFields(field.children),
                             hideSubmitter: true,
                         })}
                     </ProContainerItem>
@@ -230,27 +252,36 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         }
     };
 
-    const getFields = (fields: ProFormCardField[]): React.ReactNode[] => {
-        return fields
-            .filter((x) => !x.hidden)
-            .map((item, index) => {
-                return (
-                    <Col key={index} span={item.span || span}>
-                        {getField(item)}
-                    </Col>
-                );
-            });
+    const getFields = (fields?: ProFormCardField[]): React.ReactNode => {
+        if (!fields?.length) return null;
+
+        const hiddenFields = fields.filter((x) => x.hidden);
+        const visibleFields = fields.filter((x) => !x.hidden);
+        return (
+            <>
+                <div className='pro-form-card-hidden-fields'>{hiddenFields}</div>
+                {visibleFields
+                    .filter((x) => !x.hidden)
+                    .map((item, index) => {
+                        return (
+                            <Col key={index} span={item.span || span}>
+                                {getField(item)}
+                            </Col>
+                        );
+                    })}
+            </>
+        );
     };
 
     const getFieldsRow = ({
-        childList,
+        children,
         title,
         titleExtraRender,
         hideSubmitter,
     }: {
         title?: React.ReactNode;
         titleExtraRender?: React.ReactNode;
-        childList: React.ReactNode[];
+        children: React.ReactNode;
         hideSubmitter?: boolean;
     }) => {
         return (
@@ -264,7 +295,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         </div>
                     </Col>
                 )}
-                {childList}
+                {children}
                 {!hideSubmitter && isSubmitterBottom ? <Col span={24}>{submitterButtons}</Col> : null}
             </Row>
         );
@@ -281,7 +312,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
             <div className={'pro-form-card-submitter' + (isSubmitterBottom ? ' pro-form-card-submitter-bottom' : '')}>
                 <Space>
                     <ProButton
-                        onAsyncClick={() => actions.saveForm()}
+                        onAsyncClick={() => actions.saveForm(submitter?.validate)}
                         icon={submitter?.saveIcon === false ? undefined : submitter?.saveIcon || <SaveOutlined />}
                     >
                         {submitter?.saveText || 'Сохранить'}
@@ -304,9 +335,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
             </div>
         ) : null;
 
-    if (fields?.length) {
-        childList = getFields(fields);
-    }
+    const children = getFields(fields);
 
     if (hidden) return null;
 
@@ -315,7 +344,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
             <ProContainerItem className='pro-form-card' transparent={transparent}>
                 <Spin spinning={loading || false}>
                     <ProForm submitter={false} form={form}>
-                        {getFieldsRow({ childList, title, titleExtraRender })}
+                        {getFieldsRow({ children, title, titleExtraRender })}
                     </ProForm>
                 </Spin>
             </ProContainerItem>
