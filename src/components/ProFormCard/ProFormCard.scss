@@ -42,4 +42,10 @@
     .pro-form-card-hidden-fields {
         display: none;
     }
+
+    .pro-form-card-input-disabled,
+    .pro-form-card-select-disabled .pro-form-card-select-selector,
+    .pro-form-card-picker-disabled input {
+        color: #4c4c4c !important;
+    }
 }
