@@ -73,35 +73,43 @@ export const useProFormCard = <FormVM extends Record<string, any>>({
 
     return [form, actions] as const;
 };
+// eslint-disable-next-line @typescript-eslint/ban-types
+type KeyOfWithString<DataSource extends Record<string, any>> = (string & {}) | Extract<keyof DataSource, string>;
 
-export type ProFormCardSelectField<T = any> = {
+type KeyPath<FormVM extends Record<string, any>> =
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    KeyOfWithString<FormVM> | (KeyOfWithString<FormVM> | number)[];
+
+type FormItemProps<T, FormVM extends Record<string, any>> = Omit<T, 'name'> & { name: KeyPath<FormVM> };
+
+export type ProFormCardSelectField<FormVM extends Record<string, any>> = {
     type: 'select';
-    props: ProFormSelectProps<T>;
+    props: FormItemProps<ProFormSelectProps<any>, FormVM>;
 };
 
-export type ProFormCardDateTimeField = {
+export type ProFormCardDateTimeField<FormVM extends Record<string, any>> = {
     type: 'date';
-    props: ProFormFieldItemProps<DatePickerProps, any>;
+    props: FormItemProps<ProFormFieldItemProps<DatePickerProps, any>, FormVM>;
 };
 
-export type ProFormCardTextField = {
+export type ProFormCardTextField<FormVM extends Record<string, any>> = {
     type: 'text';
-    props: ProFormFieldItemProps<InputProps, InputRef>;
+    props: FormItemProps<ProFormFieldItemProps<InputProps, InputRef>, FormVM>;
 };
 
-export type ProFormCardNumberField = {
+export type ProFormCardNumberField<FormVM extends Record<string, any>> = {
     type: 'number';
-    props: Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>;
+    props: FormItemProps<Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>, FormVM>;
 } & NumberNormalizeArgs;
 
-export type ProFormCardRegExpField = {
+export type ProFormCardRegExpField<FormVM extends Record<string, any>> = {
     type: 'regex';
-    props: Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>;
+    props: FormItemProps<Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>, FormVM>;
 } & RegexNormalizeArgs;
 
-export type ProFormCardPasswordField = {
+export type ProFormCardPasswordField<FormVM extends Record<string, any>> = {
     type: 'password';
-    props: ProFormFieldItemProps<PasswordProps, InputRef>;
+    props: FormItemProps<ProFormFieldItemProps<PasswordProps, InputRef>, FormVM>;
 };
 
 export type ProFormCardRenderField = {
@@ -117,33 +125,38 @@ export type ProFormCardSubmitterField = {
     type: 'submitter';
 };
 
-export type ProFormCardItemField = {
+export type ProFormCardItemField<FormVM extends Record<string, any>> = {
     type: 'item';
-    children: ProFormCardChildField[];
+    children: ProFormCardChildField<FormVM>[];
     transparent?: boolean;
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 };
 
-type ProFormCardFieldCommon =
-    | ProFormCardSelectField
-    | ProFormCardDateTimeField
+type ProFormCardFieldCommon<FormVM extends Record<string, any>> =
+    | ProFormCardSelectField<FormVM>
+    | ProFormCardDateTimeField<FormVM>
     | ProFormCardRenderField
     | ProFormCardNullField
-    | ProFormCardTextField
-    | ProFormCardNumberField
-    | ProFormCardRegExpField
-    | ProFormCardPasswordField;
+    | ProFormCardTextField<FormVM>
+    | ProFormCardNumberField<FormVM>
+    | ProFormCardRegExpField<FormVM>
+    | ProFormCardPasswordField<FormVM>;
 
-type ProFormCardField = (ProFormCardFieldCommon | ProFormCardItemField | ProFormCardSubmitterField) & {
+type ProFormCardFieldDefault = {
     hidden?: boolean;
     span?: number | string;
 };
 
-type ProFormCardChildField = ProFormCardFieldCommon & {
-    hidden?: boolean;
-    span?: number | string;
-};
+type ProFormCardField<FormVM extends Record<string, any>> = (
+    | ProFormCardFieldCommon<FormVM>
+    | ProFormCardItemField<FormVM>
+    | ProFormCardSubmitterField
+) &
+    ProFormCardFieldDefault;
+
+type ProFormCardChildField<FormVM extends Record<string, any>> = ProFormCardFieldCommon<FormVM> &
+    ProFormCardFieldDefault;
 
 export type ProFormCardActions<FormVM extends Record<string, any>> = {
     setForm: () => void;
@@ -168,7 +181,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         setForm: () => void;
         saveForm: (validate?: boolean) => Promise<FormVM | undefined>;
     };
-    fields?: ProFormCardField[];
+    fields?: ProFormCardField<FormVM>[];
     submitter?:
         | false
         | {
@@ -188,7 +201,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 }) => {
-    const getField = (field: ProFormCardField): React.ReactNode => {
+    const getField = (field: ProFormCardField<FormVM>): React.ReactNode => {
         switch (field.type) {
             case 'select':
                 return <ProFormSelect {...field.props} disabled={submitter === false || field.props.disabled} />;
@@ -252,7 +265,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         }
     };
 
-    const getFields = (fields?: ProFormCardField[]): React.ReactNode => {
+    const getFields = (fields?: ProFormCardField<FormVM>[]): React.ReactNode => {
         if (!fields?.length) return null;
 
         const hiddenFields = fields.filter((x) => x.hidden);
