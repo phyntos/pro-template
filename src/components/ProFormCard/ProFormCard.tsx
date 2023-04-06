@@ -272,7 +272,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
         const visibleFields = fields.filter((x) => !x.hidden);
         return (
             <>
-                <div className='pro-form-card-hidden-fields'>{hiddenFields}</div>
+                <div className='pro-form-card-hidden-fields'>{hiddenFields.map((item) => getField(item))}</div>
                 {visibleFields
                     .filter((x) => !x.hidden)
                     .map((item, index) => {

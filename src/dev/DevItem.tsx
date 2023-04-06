@@ -123,6 +123,7 @@ const DevItem = () => {
                     fields={[
                         {
                             type: 'text',
+                            hidden: true,
                             props: {
                                 label: 'DEV Text',
                                 name: 'dev_text',
