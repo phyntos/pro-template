@@ -23,10 +23,10 @@ export const useProAccess = <
     Name extends Extract<KeyOf<Item>, string> = Extract<KeyOf<Item>, string>,
     Value extends Item[Name] = Item[Name],
 >(
-    item: Item,
+    item: Partial<Item>,
     keys: AccessKey[],
-    falseAccess: (item: Item) => boolean,
-    trueAccess: (item: Item) => boolean,
+    falseAccess: (item: Partial<Item>) => boolean,
+    trueAccess: (item: Partial<Item>) => boolean,
     accessControl: ProAccessControl<AccessKey, Item, Name, Value>,
 ) => {
     type AccessReturnType = Record<`read${AccessKey}` | `write${AccessKey}`, boolean>;
