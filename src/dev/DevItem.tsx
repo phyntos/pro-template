@@ -2,11 +2,17 @@ import { Col, ConfigProvider } from 'antd';
 import React, { useMemo, useState } from 'react';
 import ProFormCard, { useProFormCard } from '../components/ProFormCard/ProFormCard';
 import { ProButton, ProContainerItem, ProHeader, ProTabGroup, ProWorkflow, useProContainer } from '../pro-template';
+import { DevAppRole, DevAppType, useDevTemplateContext } from './DevTemplate';
+import useDevAccess from './useDevAccess';
 
 const DevItem = () => {
-    const [tab, setTab] = useState<'dev' | 'prod'>('dev');
+    const [tab, setTab] = useState<DevAppType>('dev');
+    const [role, setRole] = useState<DevAppRole>('contact');
     const [transparent, setTransparent] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { readAccess, writeAccess } = useDevAccess('Access');
+    useDevTemplateContext({ type: tab, role });
+
     useProContainer({ title: 'dev', transparent: !transparent, loading });
 
     const data = useMemo(
@@ -64,6 +70,18 @@ const DevItem = () => {
                                 tabEnum={{
                                     dev: 'DEV',
                                     prod: 'PROD',
+                                    local: 'LOCAL',
+                                }}
+                            />
+                        </Col>
+                        <Col>
+                            <ProTabGroup
+                                tab={role}
+                                onTabChange={setRole}
+                                tabEnum={{
+                                    root: 'ROOT',
+                                    admin: 'ADMIN',
+                                    contact: 'CONTACT',
                                 }}
                             />
                         </Col>
@@ -79,7 +97,11 @@ const DevItem = () => {
                         </Col>
                     </>
                 }
-                actions={<ProButton hidden>Action</ProButton>}
+                actions={
+                    <ProButton disabled={!writeAccess} hidden={!readAccess}>
+                        Action
+                    </ProButton>
+                }
                 transparent={transparent}
             />
             <ProWorkflow

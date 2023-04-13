@@ -1,20 +1,65 @@
 export type AccessItem<
     Key extends string,
     Item extends Record<Name, Value>,
-    Name extends keyof Item = keyof Item,
+    Name extends KeyOf<Item> = KeyOf<Item>,
     Value extends Item[Name] = Item[Name],
 > = {
     key: Key;
     name: Name;
-    action: 'read' | 'write';
-    type: 'white' | 'black';
+    action: AccessActionType;
+    type: AccessListType;
     values: Value[];
+    group?: string;
+};
+
+type KeyOf<T> = Extract<keyof T, string>;
+
+type AccessActionType = 'read' | 'write';
+type AccessListType = 'white' | 'black';
+
+export const useProAccess = <
+    AccessKey extends string,
+    Item extends Record<Name, Value>,
+    Name extends Extract<KeyOf<Item>, string> = Extract<KeyOf<Item>, string>,
+    Value extends Item[Name] = Item[Name],
+>(
+    item: Item,
+    keys: AccessKey[],
+    falseAccess: (item: Item) => boolean,
+    trueAccess: (item: Item) => boolean,
+    accessControl: ProAccessControl<AccessKey, Item, Name, Value>,
+) => {
+    type AccessReturnType = Record<`read${AccessKey}` | `write${AccessKey}`, boolean>;
+
+    return keys.reduce<AccessReturnType>((access, key) => {
+        if (falseAccess(item))
+            return {
+                ...access,
+                [`read${key}`]: false,
+                [`write${key}`]: false,
+            };
+
+        if (trueAccess(item))
+            return {
+                ...access,
+                [`read${key}`]: true,
+                [`write${key}`]: true,
+            };
+
+        const { write, read } = accessControl.hasAccess(key, item);
+
+        return {
+            ...access,
+            [`read${key}`]: read,
+            [`write${key}`]: write,
+        };
+    }, {} as AccessReturnType);
 };
 
 export default class ProAccessControl<
     Key extends string,
     Item extends Record<Name, Value>,
-    Name extends Extract<keyof Item, string> = Extract<keyof Item, string>,
+    Name extends Extract<KeyOf<Item>, string> = Extract<KeyOf<Item>, string>,
     Value extends Item[Name] = Item[Name],
 > {
     moduleName: string;
@@ -27,12 +72,14 @@ export default class ProAccessControl<
     setAccess<ControlName extends Name>(
         key: Key,
         name: ControlName,
-        action: 'read' | 'write',
-        type: 'black' | 'white',
+        action: AccessActionType,
+        type: AccessListType,
         values: Item[ControlName][],
+        group?: string,
     ) {
         this.accessList = this.accessList.filter(
-            (access) => access.key !== key || access.name !== name || access.action !== action,
+            (access) =>
+                access.key !== key || access.name !== name || access.action !== action || access.group !== group,
         );
         this.accessList.push({
             key,
@@ -40,11 +87,15 @@ export default class ProAccessControl<
             name,
             action,
             type,
+            group,
         });
-        localStorage.setItem(this.moduleName + action + key + name + type, JSON.stringify(values));
+        localStorage.setItem([this.moduleName, key, name, action, type].join('_'), JSON.stringify(values));
     }
 
-    private isIncludes = (access: AccessItem<Key, Item, Name, Item[Name]> | undefined, value: Item[Name]) => {
+    private isIncludes = (
+        access: Pick<AccessItem<Key, Item, Name, Item[Name]>, 'values' | 'type'> | undefined,
+        value: Item[Name],
+    ) => {
         if (!access) return true;
         if (!value) return false;
         const isIncludes = access.values.includes(value);
@@ -54,21 +105,31 @@ export default class ProAccessControl<
     hasAccess(key: Key, data: Partial<Item>): { read: boolean; write: boolean } {
         const dataList = Object.entries(data) as [Name, Value][];
 
-        const hasAccess = dataList.reduce(
-            (acc, [name, value]) => {
-                const readAccess = this.accessList.find(
-                    (access) => access.key === key && access.name === name && access.action === 'read',
+        localStorage.setItem(this.moduleName + '_data', JSON.stringify(data));
+        const groups = this.accessList.groupByArray('group');
+
+        const hasAccess = groups.reduce(
+            (groupAcc, groupItem) => {
+                const dataAccess = dataList.reduce(
+                    (acc, [name, value]) => {
+                        const readAccess = groupItem.find(
+                            (access) => access.key === key && access.name === name && access.action === 'read',
+                        );
+                        const writeAccess = groupItem.find(
+                            (access) => access.key === key && access.name === name && access.action === 'write',
+                        );
+                        const isRead = this.isIncludes(readAccess, value);
+                        const isWrite = this.isIncludes(writeAccess, value);
+
+                        return { read: acc.read && isRead, write: acc.write && isWrite };
+                    },
+                    { read: true, write: true },
                 );
-                const writeAccess = this.accessList.find(
-                    (access) => access.key === key && access.name === name && access.action === 'write',
-                );
-                const isRead = this.isIncludes(readAccess, value);
-                const isWrite = this.isIncludes(writeAccess, value);
-                return { read: acc.read && isRead, write: acc.write && isWrite };
+                return { read: groupAcc.read || dataAccess.read, write: groupAcc.write || dataAccess.write };
             },
-            { read: true, write: true },
+            { read: false, write: false },
         );
 
-        return hasAccess;
+        return { read: hasAccess.read, write: hasAccess.write };
     }
 }

@@ -122,3 +122,45 @@ export const regexNormalize =
 
         return inputValue;
     };
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Array<T> {
+        groupBy<Item extends Record<string, any> = Record<string, any>>(
+            this: Item[],
+            key: Extract<keyof Item, string>,
+        ): Record<Extract<keyof Item, string>, Item>;
+        groupByArray<Item extends Record<string, any> = Record<string, any>>(
+            this: Item[],
+            key: Extract<keyof Item, string>,
+        ): Item[][];
+    }
+}
+
+Array.prototype.groupBy = function <T extends Record<string, any> = Record<string, any>>(
+    this: T[],
+    key: Extract<keyof T, string>,
+) {
+    return this.reduce<Record<Extract<keyof T, string>, T>>((acc, element) => {
+        (acc[element[key]] = acc[element[key]] || []).push(element);
+        return acc;
+    }, {} as Record<Extract<keyof T, string>, T>);
+};
+
+Array.prototype.groupByArray = function <T extends Record<string, any> = Record<string, any>>(
+    this: T[],
+    key: Extract<keyof T, string>,
+) {
+    return this.reduce<T[][]>((acc, element) => {
+        let find = acc.find((arr) => arr[0][key] == element[key]);
+
+        if (find) {
+            find.push(element);
+        } else {
+            find = [element];
+            acc.push(find);
+        }
+
+        return acc;
+    }, []);
+};
