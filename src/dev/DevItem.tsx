@@ -1,7 +1,7 @@
 import { Col, ConfigProvider } from 'antd';
 import React, { useMemo, useState } from 'react';
 import ProFormCard, { useProFormCard } from '../components/ProFormCard/ProFormCard';
-import { ProContainerItem, ProHeader, ProTabGroup, ProWorkflow, useProContainer } from '../pro-template';
+import { ProButton, ProContainerItem, ProHeader, ProTabGroup, ProWorkflow, useProContainer } from '../pro-template';
 
 const DevItem = () => {
     const [tab, setTab] = useState<'dev' | 'prod'>('dev');
@@ -79,6 +79,7 @@ const DevItem = () => {
                         </Col>
                     </>
                 }
+                actions={<ProButton hidden>Action</ProButton>}
                 transparent={transparent}
             />
             <ProWorkflow
@@ -118,7 +119,8 @@ const DevItem = () => {
                     transparent={transparent}
                     form={form}
                     actions={actions}
-                    submitter={{ position: 'top' }}
+                    // submitter={{ position: 'top' }}
+                    submitter={false}
                     span={8}
                     fields={[
                         {

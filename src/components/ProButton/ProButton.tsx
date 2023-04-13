@@ -14,6 +14,7 @@ const ProButton: React.FC<ProButtonProps> = ({
     size = 'middle',
     style,
     className,
+    hidden,
     ...props
 }) => {
     const [asyncLoading, setAsyncLoading] = useState(false);
@@ -26,6 +27,8 @@ const ProButton: React.FC<ProButtonProps> = ({
             });
         }
     };
+
+    if (hidden) return null;
 
     return (
         <ConfigProvider prefixCls='pro-button'>
