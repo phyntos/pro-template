@@ -91,7 +91,10 @@ export default class ProAccessControl<
             type,
             group,
         });
-        localStorage.setItem([this.moduleName, key, name, action, type].join('_'), JSON.stringify(values));
+        // localStorage.setItem(
+        //     [this.moduleName, key, name, action, type, group].filter(Boolean).join('_'),
+        //     JSON.stringify(values),
+        // );
     }
 
     private isIncludes = (
@@ -107,8 +110,11 @@ export default class ProAccessControl<
     hasAccess(key: Key, data: Partial<Item>): { read: boolean; write: boolean } {
         const dataList = Object.entries(data) as [Name, Value][];
 
-        localStorage.setItem(this.moduleName + '_data', JSON.stringify(data));
-        const groups = groupByArray(this.accessList, 'group');
+        // localStorage.setItem(this.moduleName + '_data', JSON.stringify(data));
+        const groups = groupByArray(
+            this.accessList.filter((x) => x.key === key),
+            'group',
+        );
 
         const hasAccess = groups.reduce(
             (groupAcc, groupItem) => {
