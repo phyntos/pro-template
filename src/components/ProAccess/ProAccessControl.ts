@@ -1,3 +1,5 @@
+import { groupByArray } from '../../functions';
+
 export type AccessItem<
     Key extends string,
     Item extends Record<Name, Value>,
@@ -106,7 +108,7 @@ export default class ProAccessControl<
         const dataList = Object.entries(data) as [Name, Value][];
 
         localStorage.setItem(this.moduleName + '_data', JSON.stringify(data));
-        const groups = this.accessList.groupByArray('group');
+        const groups = groupByArray(this.accessList, 'group');
 
         const hasAccess = groups.reduce(
             (groupAcc, groupItem) => {
