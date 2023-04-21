@@ -74,9 +74,9 @@ export const useProFormCard = <FormVM extends Record<string, any>>({
     return [form, actions] as const;
 };
 // eslint-disable-next-line @typescript-eslint/ban-types
-type KeyOfWithString<DataSource extends Record<string, any>> = (string & {}) | Extract<keyof DataSource, string>;
+export type KeyOfWithString<DataSource extends Record<string, any>> = (string & {}) | Extract<keyof DataSource, string>;
 
-type KeyPath<FormVM extends Record<string, any>> =
+export type KeyPath<FormVM extends Record<string, any>> =
     // eslint-disable-next-line @typescript-eslint/ban-types
     KeyOfWithString<FormVM> | (KeyOfWithString<FormVM> | number)[];
 

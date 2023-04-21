@@ -1,17 +1,17 @@
+import ProAccessControl, { useProAccess } from './components/ProAccess/ProAccessControl';
+import ProAntProvider from './components/ProAntProvider';
+import ProAuth from './components/ProAuth/ProAuth';
+import ProButton from './components/ProButton/ProButton';
 import ProContainer, {
+    ProContainerItem,
     useProContainer,
     useProFormCardInstance,
-    ProContainerItem,
 } from './components/ProContainer/ProContainer';
+import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
 import ProHeader, { ProActionsDropdown } from './components/ProHeader/ProHeader';
 import ProLogo from './components/ProLogo/ProLogo';
-import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import ProTabGroup from './components/ProTabGroup/ProTabGroup';
-import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
-import ProLogin from './components/ProLogin/ProLogin';
-import ProButton from './components/ProButton/ProButton';
-import ProAntProvider from './components/ProAntProvider';
-import ProAccessControl, { useProAccess } from './components/ProAccess/ProAccessControl';
+import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import { numberNormalize } from './functions';
 
 export {
@@ -24,7 +24,7 @@ export {
     ProAccessControl,
     ProFormCard,
     ProButton,
-    ProLogin,
+    ProAuth,
     useProContainer,
     useProFormCard,
     useProFormCardInstance,

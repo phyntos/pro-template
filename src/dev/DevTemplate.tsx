@@ -1,9 +1,10 @@
 import { ToolOutlined } from '@ant-design/icons';
 import React, { useContext, useEffect, useState } from 'react';
-import { ProContainer, ProLogin } from '../pro-template';
+import { ProContainer, ProAuth, ProButton } from '../pro-template';
 import DevItem from './DevItem';
 import DevLogo from './DevLogo';
 import './DevTemplate.scss';
+import { Button } from 'antd';
 
 export type DevAppType = 'dev' | 'prod' | 'local';
 
@@ -51,19 +52,50 @@ export const useDevTemplateContext = (context?: { type?: DevAppType; role?: DevA
 };
 
 const DevTemplate = () => {
-    const [loggedIn, setLoggedIn] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
     const [role, setRole] = useState<DevAppRole>('contact');
     const [type, setType] = useState<DevAppType>('dev');
 
     if (!loggedIn)
         return (
-            <ProLogin
-                onLogin={async ({ login }: { login: DevAppRole; password: string }) => {
+            <ProAuth<{ login: DevAppRole; password: string }>
+                onSubmit={async ({ login }: { login: DevAppRole; password: string }) => {
                     if (roles.includes(login)) setRole(login);
                     else setRole('contact');
                     setLoggedIn(true);
                 }}
-                logo={<DevLogo size='big' withDescription />}
+                header={<DevLogo size='big' withDescription />}
+                fields={[
+                    {
+                        type: 'text',
+                        name: 'login',
+                        label: 'Email',
+                        rules: [{ required: true, message: 'Введите почту' }],
+                    },
+                    {
+                        type: 'password',
+                        name: 'password',
+                        label: 'Пароль',
+                        rules: [{ required: true, message: 'Введите пароль' }],
+                    },
+                ]}
+                submitter={(onSubmit) => (
+                    <ProButton prefixCls='login-button' primaryColor='#EF2920' onAsyncClick={onSubmit}>
+                        Войти
+                    </ProButton>
+                )}
+                render={({ fields, header, submitter }) => (
+                    <>
+                        {header}
+                        {fields}
+                        <div>
+                            <Button style={{ float: 'right' }} type='link'>
+                                Забыли пароль
+                            </Button>
+                        </div>
+                        {submitter}
+                    </>
+                )}
             />
         );
 

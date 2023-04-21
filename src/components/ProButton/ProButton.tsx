@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 export type ProButtonProps = ButtonProps &
     React.RefAttributes<HTMLElement> & {
         onAsyncClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => Promise<any | void>;
+        primaryColor?: string;
     };
 
 const ProButton: React.FC<ProButtonProps> = ({
@@ -15,6 +16,8 @@ const ProButton: React.FC<ProButtonProps> = ({
     style,
     className,
     hidden,
+    primaryColor,
+    prefixCls,
     ...props
 }) => {
     const [asyncLoading, setAsyncLoading] = useState(false);
@@ -31,7 +34,19 @@ const ProButton: React.FC<ProButtonProps> = ({
     if (hidden) return null;
 
     return (
-        <ConfigProvider prefixCls='pro-button'>
+        <ConfigProvider
+            prefixCls={prefixCls ?? 'pro-button'}
+            theme={
+                primaryColor
+                    ? {
+                          token: {
+                              colorPrimary: primaryColor,
+                              colorInfo: primaryColor,
+                          },
+                      }
+                    : undefined
+            }
+        >
             <Button
                 {...props}
                 className={className}
