@@ -124,6 +124,7 @@ const DevTemplate = () => {
                 onLogout={() => setLoggedIn(false)}
                 profileKey='dev'
                 // transparentContent
+                extraHeader={'asd'}
             />
         </DevTemplateContext.Provider>
     );

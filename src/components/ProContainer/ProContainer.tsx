@@ -215,6 +215,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     profileKey,
     logo,
     userData,
+    extraHeader,
 }: {
     menuItems: ProContainerMenuItem<ItemKey, Roles>[];
     onLogout?: () => void;
@@ -227,6 +228,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
         fullName?: string | null;
         roleNames: Record<Roles, string>;
     };
+    extraHeader?: React.ReactNode;
 }) => {
     const [activeKey, setActiveKey] = useState<ItemKey>(defaultKey);
     const [title, setTitle] = useState('');
@@ -323,6 +325,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                     </Breadcrumb>
                                 </Space>
                                 <Space size={16}>
+                                    {extraHeader}
                                     {userData.fullName && (
                                         <div
                                             className={
