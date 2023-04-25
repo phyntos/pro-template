@@ -1,5 +1,6 @@
 import ProAccessControl, { useProAccess } from './components/ProAccess/ProAccessControl';
 import ProAntProvider from './components/ProAntProvider';
+import ProThemeChanger, { ProThemeProvider, useProTheme } from './components/ProThemeChanger/ProThemeChanger';
 import ProAuth from './components/ProAuth/ProAuth';
 import ProButton from './components/ProButton/ProButton';
 import ProContainer, {
@@ -32,4 +33,7 @@ export {
     ProActionsDropdown,
     numberNormalize,
     useProAccess,
+    ProThemeProvider,
+    useProTheme,
+    ProThemeChanger,
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import './ProLogo.scss';
+import { theme } from 'antd';
 
 export type ProLogoSize = 'normal' | 'mini' | 'big';
 
@@ -16,6 +17,7 @@ const ProLogo = ({
     description?: string;
     logo: React.ReactNode;
 }) => {
+    const { token } = theme.useToken();
     const classNames = ['pro-logo-container'];
     if (className) classNames.push(className);
     if (size === 'mini') classNames.push('pro-logo-mini');
@@ -24,7 +26,11 @@ const ProLogo = ({
     return (
         <div className={classNames.join(' ')}>
             <div className='pro-logo'>{logo}</div>
-            {withDescription && <div className='pro-logo-desc'>{description}</div>}
+            {withDescription && (
+                <div className='pro-logo-desc' style={{ color: token.colorText }}>
+                    {description}
+                </div>
+            )}
         </div>
     );
 };

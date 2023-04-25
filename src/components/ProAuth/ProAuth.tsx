@@ -1,6 +1,6 @@
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
-import { ConfigProvider, InputProps, InputRef } from 'antd';
+import { ConfigProvider, InputProps, InputRef, theme } from 'antd';
 import { PasswordProps } from 'antd/es/input';
 import React from 'react';
 import { KeyPath } from '../ProFormCard/ProFormCard';
@@ -34,6 +34,8 @@ const ProAuth = <AuthVM extends Record<string, any>>({
     const classNames = ['pro-auth-container'];
     if (className) classNames.push(className);
 
+    const { token } = theme.useToken();
+
     const onSubmitClick = async () => {
         const fields = await form.validateFields();
         await onSubmit(fields);
@@ -42,7 +44,12 @@ const ProAuth = <AuthVM extends Record<string, any>>({
     return (
         <ConfigProvider prefixCls='pro-auth'>
             <div className={classNames.join(' ')}>
-                <ProForm form={form} className='pro-auth-form' submitter={false}>
+                <ProForm
+                    form={form}
+                    className='pro-auth-form'
+                    style={{ backgroundColor: token.colorBgContainer }}
+                    submitter={false}
+                >
                     {render({
                         header: <div className='pro-auth-header'>{header}</div>,
                         fields: fields?.map(({ type, name, ...props }) => {

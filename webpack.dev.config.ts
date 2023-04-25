@@ -47,7 +47,7 @@ const config: Configuration = {
     },
     devServer: {
         historyApiFallback: true,
-        port: 4001,
+        port: 4002,
         hot: true,
         open: true,
     },
