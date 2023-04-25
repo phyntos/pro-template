@@ -23,7 +23,7 @@
     "license": "ISC",
     "devDependencies": {
         "@ant-design/icons": "^5.0.1",
-        "@ant-design/pro-components": "^2.4.3",
+        "@ant-design/pro-components": "^2.3.54",
         "@types/node": "^18.15.10",
         "@types/react": "^17.0.52",
         "@types/react-dom": "^17.0.18",
