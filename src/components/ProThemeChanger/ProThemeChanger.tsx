@@ -1,4 +1,4 @@
-import { AlertFilled, AlertOutlined } from '@ant-design/icons';
+import { BulbFilled, BulbOutlined } from '@ant-design/icons';
 import { ConfigProvider, theme as antTheme } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -42,12 +42,12 @@ export const useProTheme = () => {
 };
 
 const ProThemeChanger = ({
-    darkIcon = AlertFilled,
-    lightIcon = AlertOutlined,
+    darkIcon = BulbFilled,
+    lightIcon = BulbOutlined,
     customRender,
 }: {
-    darkIcon?: typeof AlertFilled;
-    lightIcon?: typeof AlertFilled;
+    darkIcon?: typeof BulbFilled;
+    lightIcon?: typeof BulbFilled;
     customRender?: (theme: AntTheme, setTheme: React.Dispatch<React.SetStateAction<AntTheme>>) => React.ReactNode;
 }) => {
     const [theme, setTheme] = useProTheme();
