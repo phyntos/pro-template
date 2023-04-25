@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProFormCardActions } from '../ProFormCard/ProFormCard';
 import { ProLogoSize } from '../ProLogo/ProLogo';
-import ProThemeChanger, { useProTheme } from '../ProThemeChanger/ProThemeChanger';
+import ProThemeChanger from '../ProThemeChanger/ProThemeChanger';
 import './ProContainer.scss';
 
 const { Header, Sider, Content } = Layout;
@@ -201,7 +201,7 @@ export const ProContainerItem = ({
 
     return (
         <div
-            style={{ backgroundColor: !transparent ? token.colorBgContainer : undefined }}
+            style={{ backgroundColor: !transparent ? token.colorBgContainer : undefined, color: token.colorText }}
             className={['pro-container-item', className, transparent && 'pro-container-item-transparent']
                 .filter(Boolean)
                 .join(' ')}
@@ -244,7 +244,6 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     const location = useLocation();
     const navigate = useNavigate();
     const { token } = theme.useToken();
-    const [antTheme] = useProTheme();
 
     const items = filterMenuItems(menuItems, userData.role);
 
@@ -300,10 +299,10 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                     value={{ title, setTitle, transparent, setTransparent, loading, setLoading }}
                 >
                     <Layout className='pro-container-main-layout'>
-                        <Sider theme={antTheme} trigger={null} collapsible collapsed={collapsed}>
+                        <Sider theme='dark' trigger={null} collapsible collapsed={collapsed}>
                             <div className='pro-container-logo'>{logo?.(collapsed ? 'mini' : 'normal')}</div>
                             <Menu
-                                theme={antTheme}
+                                theme='dark'
                                 mode='inline'
                                 items={items.map(menuItemMap)}
                                 selectedKeys={[activeKey]}
