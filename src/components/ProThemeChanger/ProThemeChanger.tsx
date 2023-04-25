@@ -1,6 +1,6 @@
 import { AlertFilled, AlertOutlined } from '@ant-design/icons';
 import { ConfigProvider, theme as antTheme } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 export type AntTheme = 'dark' | 'light';
 
@@ -13,8 +13,16 @@ const ProThemeContext = React.createContext<{
     setTheme: () => {},
 });
 
-export const ProThemeProvider = ({ children }: { children?: React.ReactNode }) => {
-    const [theme, setTheme] = useState<AntTheme>('light');
+export const ProThemeProvider = ({ children, storage = true }: { children?: React.ReactNode; storage?: boolean }) => {
+    const localTheme = storage ? (localStorage.getItem('pro-theme') as AntTheme | undefined) : 'light';
+
+    const [theme, setTheme] = useState<AntTheme>(localTheme ?? 'light');
+
+    useEffect(() => {
+        if (storage) {
+            localStorage.setItem('pro-theme', theme);
+        }
+    }, [theme, storage]);
 
     return (
         <ProThemeContext.Provider value={{ setTheme, theme }}>

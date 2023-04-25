@@ -8,10 +8,12 @@ const ProAntProvider = ({
     children,
     primaryColor,
     prefix,
+    storageTheme,
 }: {
     children: React.ReactNode;
     primaryColor?: string;
     prefix?: string;
+    storageTheme?: boolean;
 }) => {
     return (
         <StyleProvider hashPriority='high' transformers={[legacyLogicalPropertiesTransformer]}>
@@ -30,7 +32,7 @@ const ProAntProvider = ({
                 renderEmpty={() => <Empty description='Отсутствуют данные' />}
                 prefixCls={prefix}
             >
-                <ProThemeProvider>{children}</ProThemeProvider>
+                <ProThemeProvider storage={storageTheme}>{children}</ProThemeProvider>
             </ConfigProvider>
         </StyleProvider>
     );
