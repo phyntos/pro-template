@@ -143,7 +143,7 @@ const getMenuItem = <ItemKey extends string, Roles extends string>(
 
 const getMenuItemWithParents = <ItemKey extends string, Roles extends string>(
     items: ProContainerMenuItem<ItemKey, Roles>[],
-    key: ItemKey,
+    key?: ItemKey,
 ): ProContainerMenuItem<ItemKey, Roles>[] => {
     for (const item of items) {
         if (item.children) {
@@ -224,7 +224,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
 }: {
     menuItems: ProContainerMenuItem<ItemKey, Roles>[];
     onLogout?: () => void;
-    defaultKey: ItemKey;
+    defaultKey?: ItemKey;
     specialDefaultKeys?: Partial<Record<Roles, ItemKey>>;
     profileKey?: ItemKey;
     logo?: (size: ProLogoSize) => React.ReactNode;
@@ -236,7 +236,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     extraHeader?: React.ReactNode;
     hideThemeChanger?: boolean;
 }) => {
-    const [activeKey, setActiveKey] = useState<ItemKey>(defaultKey);
+    const [activeKey, setActiveKey] = useState<ItemKey | undefined>(defaultKey);
     const [title, setTitle] = useState('');
     const [transparent, setTransparent] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -305,7 +305,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                 theme='dark'
                                 mode='inline'
                                 items={items.map(menuItemMap)}
-                                selectedKeys={[activeKey]}
+                                selectedKeys={activeKey ? [activeKey] : []}
                             />
                         </Sider>
                         <Layout>
