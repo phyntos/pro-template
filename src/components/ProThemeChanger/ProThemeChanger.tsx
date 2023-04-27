@@ -1,6 +1,7 @@
 import { BulbFilled, BulbOutlined } from '@ant-design/icons';
 import { ConfigProvider, theme as antTheme } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+import './ProThemeChanger.scss';
 
 export type AntTheme = 'dark' | 'light';
 
@@ -29,6 +30,7 @@ export const ProThemeProvider = ({ children, storage = true }: { children?: Reac
             <ConfigProvider
                 theme={{ algorithm: theme === 'dark' ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm }}
             >
+                <input id='theme' value={theme} style={{ display: 'none' }} />
                 {children}
             </ConfigProvider>
         </ProThemeContext.Provider>

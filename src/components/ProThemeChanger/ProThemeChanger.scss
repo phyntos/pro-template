@@ -1,0 +1,23 @@
+body:has(input#theme[value='dark']) input {
+    &:-webkit-autofill,
+    &:-webkit-autofill:first-line,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active,
+    &:-webkit-autofill:hover {
+        -webkit-text-fill-color: #fff !important;
+    }
+}
+
+input {
+    &:-webkit-autofill {
+        -webkit-background-clip: text;
+    }
+}
+
+body:has(input#theme[value='dark']) {
+    .pro-form-card-input-disabled,
+    .pro-form-card-select-disabled .pro-form-card-select-selector,
+    .pro-form-card-picker-disabled input {
+        color: #e5e5e5 !important;
+    }
+}
