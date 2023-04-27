@@ -6,10 +6,13 @@ import {
     ProFormSelect,
     ProFormSelectProps,
     ProFormText,
+    ProFormTextArea,
+    ProFormUploadButton,
+    ProFormUploadButtonProps,
 } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
 import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
-import { InputProps, PasswordProps } from 'antd/lib/input';
+import { InputProps, PasswordProps, TextAreaProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
@@ -22,6 +25,7 @@ import {
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
+import { TextAreaRef } from 'antd/lib/input/TextArea';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
     id,
@@ -92,9 +96,19 @@ export type ProFormCardDateTimeField<FormVM extends Record<string, any>> = {
     props: FormItemProps<ProFormFieldItemProps<DatePickerProps, any>, FormVM>;
 };
 
+export type ProFormCardUploadButtonField<FormVM extends Record<string, any>> = {
+    type: 'upload_button';
+    props: FormItemProps<ProFormUploadButtonProps, FormVM>;
+};
+
 export type ProFormCardTextField<FormVM extends Record<string, any>> = {
     type: 'text';
     props: FormItemProps<ProFormFieldItemProps<InputProps, InputRef>, FormVM>;
+};
+
+export type ProFormCardTextAreaField<FormVM extends Record<string, any>> = {
+    type: 'textarea';
+    props: FormItemProps<ProFormFieldItemProps<TextAreaProps, TextAreaRef>, FormVM>;
 };
 
 export type ProFormCardNumberField<FormVM extends Record<string, any>> = {
@@ -139,8 +153,10 @@ type ProFormCardFieldCommon<FormVM extends Record<string, any>> =
     | ProFormCardRenderField
     | ProFormCardNullField
     | ProFormCardTextField<FormVM>
+    | ProFormCardTextAreaField<FormVM>
     | ProFormCardNumberField<FormVM>
     | ProFormCardRegExpField<FormVM>
+    | ProFormCardUploadButtonField<FormVM>
     | ProFormCardPasswordField<FormVM>;
 
 type ProFormCardFieldDefault = {
@@ -213,8 +229,12 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         fieldProps={{ ...field.props.fieldProps, format: 'DD.MM.YYYY' }}
                     />
                 );
+            case 'upload_button':
+                return <ProFormUploadButton {...field.props} disabled={submitter === false || field.props.disabled} />;
             case 'text':
                 return <ProFormText {...field.props} disabled={submitter === false || field.props.disabled} />;
+            case 'textarea':
+                return <ProFormTextArea {...field.props} disabled={submitter === false || field.props.disabled} />;
             case 'number':
                 return (
                     <ProFormText
