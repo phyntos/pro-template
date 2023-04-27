@@ -1,8 +1,10 @@
 import { DownOutlined } from '@ant-design/icons';
+import { ProProvider, createIntl } from '@ant-design/pro-components';
 import { ConfigProvider, Dropdown, theme } from 'antd';
 import { Locale } from 'antd/es/locale';
 import ruRU from 'antd/locale/ru_RU';
 import React, { useContext, useEffect, useState } from 'react';
+import kk_KZ from '../../locales/kk_KZ';
 
 const ProLocaleContext = React.createContext<{
     locale: Locale;
@@ -18,7 +20,11 @@ export const ProLocaleProvider = ({ children }: { children?: React.ReactNode }) 
 
     return (
         <ProLocaleContext.Provider value={{ setLocale, locale }}>
-            <ConfigProvider locale={locale}>{children}</ConfigProvider>
+            <ConfigProvider locale={locale}>
+                <ProProvider.Provider value={{ intl: locale.locale === 'kk' ? createIntl('kk_KZ', kk_KZ) : undefined }}>
+                    {children}
+                </ProProvider.Provider>
+            </ConfigProvider>
         </ProLocaleContext.Provider>
     );
 };

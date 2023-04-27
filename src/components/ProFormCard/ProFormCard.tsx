@@ -9,7 +9,6 @@ import {
     ProFormTextArea,
     ProFormUploadButton,
     ProFormUploadButtonProps,
-    createIntl,
     useIntl,
 } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
@@ -28,7 +27,6 @@ import {
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
-import kk_KZ from '../../locales/kk_KZ';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
     id,
@@ -220,12 +218,8 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 }) => {
-    const currentIntl = useIntl();
+    const intl = useIntl();
     const { locale } = useContext(ConfigProvider.ConfigContext);
-
-    const kzIntl = createIntl('kk_KZ', kk_KZ);
-
-    const intl = locale?.locale === 'kk' ? kzIntl : currentIntl;
 
     const getField = (field: ProFormCardField<FormVM>): React.ReactNode => {
         switch (field.type) {
