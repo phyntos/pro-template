@@ -243,7 +243,7 @@ const ProContainer = <
     logoutText?: string;
     extraHeader?: React.ReactNode;
     localeChanger?: ProLocaleChangerProps<LangLabels>;
-    themeChanger?: ProThemeChangerProps;
+    themeChanger?: true | ProThemeChangerProps;
 }) => {
     const [activeKey, setActiveKey] = useState<ItemKey | undefined>(defaultKey);
     const [title, setTitle] = useState('');
@@ -342,7 +342,9 @@ const ProContainer = <
                                 </Space>
                                 <Space size={16}>
                                     {extraHeader}
-                                    {themeChanger && <ProThemeChanger {...themeChanger} />}
+                                    {themeChanger && (
+                                        <ProThemeChanger {...(themeChanger === true ? {} : themeChanger)} />
+                                    )}
                                     {localeChanger && <ProLocaleChanger {...localeChanger} />}
                                     {userData.fullName && (
                                         <div
