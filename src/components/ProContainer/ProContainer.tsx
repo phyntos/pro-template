@@ -6,8 +6,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProFormCardActions } from '../ProFormCard/ProFormCard';
 import { ProLogoSize } from '../ProLogo/ProLogo';
-import ProThemeChanger from '../ProThemeChanger/ProThemeChanger';
+import ProThemeChanger, { ProThemeChangerProps } from '../ProThemeChanger/ProThemeChanger';
 import './ProContainer.scss';
+import ProLocaleChanger, { ProLocaleChangerProps } from '../ProLocaleChanger/ProLocaleChanger';
 
 const { Header, Sider, Content } = Layout;
 
@@ -211,7 +212,11 @@ export const ProContainerItem = ({
     );
 };
 
-const ProContainer = <ItemKey extends string, Roles extends string>({
+const ProContainer = <
+    ItemKey extends string,
+    Roles extends string,
+    LangLabels extends Record<string, string | undefined>,
+>({
     menuItems,
     onLogout,
     defaultKey,
@@ -220,7 +225,9 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
     logo,
     userData,
     extraHeader,
-    hideThemeChanger,
+    themeChanger,
+    localeChanger,
+    logoutText,
 }: {
     menuItems: ProContainerMenuItem<ItemKey, Roles>[];
     onLogout?: () => void;
@@ -233,8 +240,10 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
         fullName?: string | null;
         roleNames: Record<Roles, string>;
     };
+    logoutText?: string;
     extraHeader?: React.ReactNode;
-    hideThemeChanger?: boolean;
+    localeChanger?: ProLocaleChangerProps<LangLabels>;
+    themeChanger?: ProThemeChangerProps;
 }) => {
     const [activeKey, setActiveKey] = useState<ItemKey | undefined>(defaultKey);
     const [title, setTitle] = useState('');
@@ -333,7 +342,8 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                 </Space>
                                 <Space size={16}>
                                     {extraHeader}
-                                    {!hideThemeChanger && <ProThemeChanger />}
+                                    {themeChanger && <ProThemeChanger {...themeChanger} />}
+                                    {localeChanger && <ProLocaleChanger {...localeChanger} />}
                                     {userData.fullName && (
                                         <div
                                             className={
@@ -355,7 +365,7 @@ const ProContainer = <ItemKey extends string, Roles extends string>({
                                         </div>
                                     )}
                                     {onLogout && (
-                                        <Tooltip title='Выйти'>
+                                        <Tooltip title={logoutText || 'Logout'} placement='bottomRight'>
                                             <LogoutOutlined className='icon-button' onClick={onLogout} />
                                         </Tooltip>
                                     )}

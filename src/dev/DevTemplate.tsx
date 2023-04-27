@@ -4,6 +4,8 @@ import { ProContainer, ProAuth, ProButton } from '../pro-template';
 import DevItem from './DevItem';
 import DevLogo from './DevLogo';
 import './DevTemplate.scss';
+import ruRU from 'antd/locale/ru_RU';
+import kkKZ from 'antd/locale/kk_KZ';
 import { Button } from 'antd';
 
 export type DevAppType = 'dev' | 'prod' | 'local';
@@ -55,6 +57,7 @@ const DevTemplate = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [role, setRole] = useState<DevAppRole>('contact');
     const [type, setType] = useState<DevAppType>('dev');
+    const [lang, setLang] = useState<'kz' | 'ru'>('kz');
 
     if (!loggedIn)
         return (
@@ -125,6 +128,15 @@ const DevTemplate = () => {
                 profileKey='dev'
                 // transparentContent
                 extraHeader={'asd'}
+                localeChanger={{
+                    labels: { kz: 'КАЗ', ru: 'РУС' },
+                    lang: lang,
+                    locales: {
+                        kz: kkKZ,
+                        ru: ruRU,
+                    },
+                    onChange: setLang,
+                }}
             />
         </DevTemplateContext.Provider>
     );

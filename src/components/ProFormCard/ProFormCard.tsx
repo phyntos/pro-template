@@ -9,23 +9,26 @@ import {
     ProFormTextArea,
     ProFormUploadButton,
     ProFormUploadButtonProps,
+    createIntl,
+    useIntl,
 } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
 import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
 import { InputProps, PasswordProps, TextAreaProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { TextAreaRef } from 'antd/lib/input/TextArea';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import {
+    NumberNormalizeArgs,
+    RegexNormalizeArgs,
     deepComparison,
     numberNormalize,
-    NumberNormalizeArgs,
     regexNormalize,
-    RegexNormalizeArgs,
 } from '../../functions';
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
-import { TextAreaRef } from 'antd/lib/input/TextArea';
+import kk_KZ from '../../locales/kk_KZ';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
     id,
@@ -71,7 +74,10 @@ export const useProFormCard = <FormVM extends Record<string, any>>({
         [data, form],
     );
 
-    const actions = useMemo(() => ({ setField, saveForm, setForm }), [setForm, saveForm, setField]);
+    const actions = useMemo<ProFormCardActions<FormVM>>(
+        () => ({ setField, saveForm, setForm }),
+        [setForm, saveForm, setField],
+    );
 
     useSetProFormCardInstance(id, form, actions);
 
@@ -193,10 +199,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     titleExtraRender,
 }: {
     form: FormInstance<FormVM>;
-    actions: {
-        setForm: () => void;
-        saveForm: (validate?: boolean) => Promise<FormVM | undefined>;
-    };
+    actions: ProFormCardActions<FormVM>;
     fields?: ProFormCardField<FormVM>[];
     submitter?:
         | false
@@ -217,6 +220,13 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     title?: React.ReactNode;
     titleExtraRender?: React.ReactNode;
 }) => {
+    const currentIntl = useIntl();
+    const { locale } = useContext(ConfigProvider.ConfigContext);
+
+    const kzIntl = createIntl('kk_KZ', kk_KZ);
+
+    const intl = locale?.locale === 'kk' ? kzIntl : currentIntl;
+
     const getField = (field: ProFormCardField<FormVM>): React.ReactNode => {
         switch (field.type) {
             case 'select':
@@ -348,7 +358,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                         onAsyncClick={() => actions.saveForm(submitter?.validate)}
                         icon={submitter?.saveIcon === false ? undefined : submitter?.saveIcon || <SaveOutlined />}
                     >
-                        {submitter?.saveText || 'Сохранить'}
+                        {submitter?.saveText || intl.getMessage('editableTable.action.save', 'Save')}
                     </ProButton>
                     {!submitter?.hideReset && (
                         <ProButton
@@ -360,7 +370,7 @@ const ProFormCard = <FormVM extends Record<string, any>>({
                                     : submitter?.resetIcon || <RollbackOutlined />
                             }
                         >
-                            {submitter?.resetText || 'Отмена'}
+                            {submitter?.resetText || locale?.Modal?.cancelText || 'Cancel'}
                         </ProButton>
                     )}
                     {submitter?.extraRender}

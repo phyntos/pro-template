@@ -41,16 +41,22 @@ export const useProTheme = () => {
     return [theme, setTheme] as const;
 };
 
+export type ProThemeChangerProps = {
+    darkIcon?: typeof BulbFilled;
+    lightIcon?: typeof BulbFilled;
+    hidden?: boolean;
+    customRender?: (theme: AntTheme, setTheme: React.Dispatch<React.SetStateAction<AntTheme>>) => React.ReactNode;
+};
+
 const ProThemeChanger = ({
     darkIcon = BulbFilled,
     lightIcon = BulbOutlined,
     customRender,
-}: {
-    darkIcon?: typeof BulbFilled;
-    lightIcon?: typeof BulbFilled;
-    customRender?: (theme: AntTheme, setTheme: React.Dispatch<React.SetStateAction<AntTheme>>) => React.ReactNode;
-}) => {
+    hidden,
+}: ProThemeChangerProps) => {
     const [theme, setTheme] = useProTheme();
+
+    if (hidden) return null;
 
     if (customRender) return <>{customRender(theme, setTheme)}</>;
 

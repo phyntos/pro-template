@@ -14,6 +14,7 @@ import ProLogo from './components/ProLogo/ProLogo';
 import ProTabGroup from './components/ProTabGroup/ProTabGroup';
 import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import { numberNormalize } from './functions';
+import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
 
 export {
     ProContainer,
@@ -36,4 +37,7 @@ export {
     ProThemeProvider,
     useProTheme,
     ProThemeChanger,
+    ProLocaleProvider,
+    ProLocaleChanger,
+    useProLocale,
 };

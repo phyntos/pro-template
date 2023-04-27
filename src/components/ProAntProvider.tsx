@@ -2,7 +2,7 @@ import ruRU from 'antd/locale/ru_RU';
 import React from 'react';
 import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs';
 import { ConfigProvider, Empty } from 'antd';
-import { ProThemeProvider } from '../pro-template';
+import { ProLocaleProvider, ProThemeProvider } from '../pro-template';
 
 const ProAntProvider = ({
     children,
@@ -32,7 +32,9 @@ const ProAntProvider = ({
                 renderEmpty={() => <Empty description='Отсутствуют данные' />}
                 prefixCls={prefix}
             >
-                <ProThemeProvider storage={storageTheme}>{children}</ProThemeProvider>
+                <ProLocaleProvider>
+                    <ProThemeProvider storage={storageTheme}>{children}</ProThemeProvider>
+                </ProLocaleProvider>
             </ConfigProvider>
         </StyleProvider>
     );
