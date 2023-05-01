@@ -14,10 +14,19 @@ const ProThemeContext = React.createContext<{
     setTheme: () => {},
 });
 
-export const ProThemeProvider = ({ children, storage = true }: { children?: React.ReactNode; storage?: boolean }) => {
-    const localTheme = storage ? (localStorage.getItem('pro-theme') as AntTheme | undefined) : 'light';
+export const ProThemeProvider = ({
+    children,
+    storage = true,
+    defaultTheme,
+}: {
+    children?: React.ReactNode;
+    storage?: boolean;
+    defaultTheme?: AntTheme;
+}) => {
+    const localTheme =
+        (storage ? (localStorage.getItem('pro-theme') as AntTheme | undefined) : defaultTheme) ?? 'light';
 
-    const [theme, setTheme] = useState<AntTheme>(localTheme ?? 'light');
+    const [theme, setTheme] = useState<AntTheme>(localTheme);
 
     useEffect(() => {
         if (storage) {

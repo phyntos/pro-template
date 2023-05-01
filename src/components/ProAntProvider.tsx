@@ -3,17 +3,20 @@ import React from 'react';
 import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs';
 import { ConfigProvider, Empty } from 'antd';
 import { ProLocaleProvider, ProThemeProvider } from '../pro-template';
+import { AntTheme } from './ProThemeChanger/ProThemeChanger';
 
 const ProAntProvider = ({
     children,
     primaryColor,
     prefix,
     storageTheme,
+    defaultTheme,
 }: {
     children: React.ReactNode;
     primaryColor?: string;
     prefix?: string;
     storageTheme?: boolean;
+    defaultTheme?: AntTheme;
 }) => {
     return (
         <StyleProvider hashPriority='high' transformers={[legacyLogicalPropertiesTransformer]}>
@@ -33,7 +36,9 @@ const ProAntProvider = ({
                 prefixCls={prefix}
             >
                 <ProLocaleProvider>
-                    <ProThemeProvider storage={storageTheme}>{children}</ProThemeProvider>
+                    <ProThemeProvider storage={storageTheme} defaultTheme={defaultTheme}>
+                        {children}
+                    </ProThemeProvider>
                 </ProLocaleProvider>
             </ConfigProvider>
         </StyleProvider>
