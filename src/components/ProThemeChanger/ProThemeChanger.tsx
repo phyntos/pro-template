@@ -24,7 +24,8 @@ export const ProThemeProvider = ({
     defaultTheme?: AntTheme;
 }) => {
     const localTheme =
-        (storage ? (localStorage.getItem('pro-theme') as AntTheme | undefined) : defaultTheme) ?? 'light';
+        (storage ? (localStorage.getItem('pro-theme') as AntTheme | undefined) ?? defaultTheme : defaultTheme) ??
+        'light';
 
     const [theme, setTheme] = useState<AntTheme>(localTheme);
 
