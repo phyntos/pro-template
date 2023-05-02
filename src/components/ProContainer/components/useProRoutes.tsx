@@ -2,7 +2,6 @@ import { Breadcrumb, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ProContainerItem } from '../ProContainer';
-import { title } from 'process';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 
 type ProContainerMenuItemWithChildren<ItemKey extends string, Roles extends string> = {
@@ -95,6 +94,7 @@ const filterMenuItems = <ItemKey extends string, Roles extends string>(
 export type ProRoutesProps<ItemKey extends string, Roles extends string> = {
     loading?: boolean;
     transparent?: boolean;
+    title?: string;
     items: ProContainerMenuItem<ItemKey, Roles>[];
     defaultKey?: ItemKey;
     specialDefaultKeys?: Partial<Record<Roles, ItemKey>>;
@@ -109,6 +109,7 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
     defaultKey,
     profileKey,
     specialDefaultKeys,
+    title,
     role,
 }: ProRoutesProps<ItemKey, Roles>) => {
     const location = useLocation();

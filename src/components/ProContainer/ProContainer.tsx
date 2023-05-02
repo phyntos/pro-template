@@ -139,7 +139,7 @@ const ProContainer = <
     tools,
     userData,
 }: {
-    routes?: Omit<ProRoutesProps<ItemKey, Roles>, 'role' | 'loading' | 'transparent'>;
+    routes?: Omit<ProRoutesProps<ItemKey, Roles>, 'role' | 'loading' | 'transparent' | 'title'>;
     logo?: (size: ProLogoSize) => React.ReactNode;
     tools?: ProToolsProps<Roles, LangLabels>;
     userData: UserData<Roles>;
@@ -154,6 +154,7 @@ const ProContainer = <
         role: userData.role,
         loading,
         transparent,
+        title,
         ...routes,
         items: routes?.items || [],
     });
