@@ -1,4 +1,4 @@
-body:has(input#theme[value='dark']) input {
+body.dark-mode input {
     &:-webkit-autofill,
     &:-webkit-autofill:first-line,
     &:-webkit-autofill:focus,
@@ -14,7 +14,7 @@ input {
     }
 }
 
-body:has(input#theme[value='dark']) {
+body.dark-mode {
     .pro-form-card-input-disabled,
     .pro-form-card-select-disabled .pro-form-card-select-selector,
     .pro-form-card-picker-disabled input {

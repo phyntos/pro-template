@@ -2,31 +2,21 @@ import { RollbackOutlined, SaveOutlined } from '@ant-design/icons';
 import {
     FormInstance,
     ProForm,
-    ProFormDatePicker,
-    ProFormSelect,
     ProFormSelectProps,
-    ProFormText,
-    ProFormTextArea,
-    ProFormUploadButton,
     ProFormUploadButtonProps,
     useIntl,
 } from '@ant-design/pro-components';
 import { ProFormFieldItemProps } from '@ant-design/pro-form/es/typing';
-import { Col, ConfigProvider, DatePickerProps, Row, Space, Spin } from 'antd';
+import { ConfigProvider, DatePickerProps, Space, Spin } from 'antd';
 import { InputProps, PasswordProps, TextAreaProps } from 'antd/lib/input';
 import { InputRef } from 'antd/lib/input/Input';
 import { TextAreaRef } from 'antd/lib/input/TextArea';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
-import {
-    NumberNormalizeArgs,
-    RegexNormalizeArgs,
-    deepComparison,
-    numberNormalize,
-    regexNormalize,
-} from '../../functions';
+import { NumberNormalizeArgs, RegexNormalizeArgs, deepComparison } from '../../functions';
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
+import { ProFields, ProFieldRow, ProField } from './components';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
     id,
@@ -168,7 +158,7 @@ type ProFormCardFieldDefault = {
     span?: number | string;
 };
 
-type ProFormCardField<FormVM extends Record<string, any>> = (
+export type ProFormCardField<FormVM extends Record<string, any>> = (
     | ProFormCardFieldCommon<FormVM>
     | ProFormCardItemField<FormVM>
     | ProFormCardSubmitterField
@@ -221,123 +211,6 @@ const ProFormCard = <FormVM extends Record<string, any>>({
     const intl = useIntl();
     const { locale } = useContext(ConfigProvider.ConfigContext);
 
-    const getField = (field: ProFormCardField<FormVM>): React.ReactNode => {
-        switch (field.type) {
-            case 'select':
-                return <ProFormSelect {...field.props} disabled={submitter === false || field.props.disabled} />;
-            case 'date':
-                return (
-                    <ProFormDatePicker
-                        {...field.props}
-                        disabled={submitter === false || field.props.disabled}
-                        fieldProps={{ ...field.props.fieldProps, format: 'DD.MM.YYYY' }}
-                    />
-                );
-            case 'upload_button':
-                return <ProFormUploadButton {...field.props} disabled={submitter === false || field.props.disabled} />;
-            case 'text':
-                return <ProFormText {...field.props} disabled={submitter === false || field.props.disabled} />;
-            case 'textarea':
-                return <ProFormTextArea {...field.props} disabled={submitter === false || field.props.disabled} />;
-            case 'number':
-                return (
-                    <ProFormText
-                        {...field.props}
-                        disabled={submitter === false || field.props.disabled}
-                        normalize={numberNormalize({
-                            isInteger: field.isInteger,
-                            isPositive: field.isPositive,
-                            max: field.max,
-                            min: field.min,
-                            fractionDigits: field.fractionDigits,
-                        })}
-                    />
-                );
-            case 'regex':
-                return (
-                    <ProFormText
-                        {...field.props}
-                        disabled={submitter === false || field.props.disabled}
-                        normalize={regexNormalize({
-                            regex: field.regex,
-                            toUpper: field.toUpper,
-                        })}
-                    />
-                );
-            case 'password':
-                return <ProFormText.Password {...field.props} disabled={submitter === false || field.props.disabled} />;
-            case 'render':
-                return field.render();
-            case 'null':
-                return null;
-            case 'submitter':
-                return submitterButtons;
-            case 'item':
-                return (
-                    <ProContainerItem transparent={field.transparent}>
-                        {getFieldsRow({
-                            title: field.title,
-                            titleExtraRender: field.titleExtraRender,
-                            children: getFields(field.children),
-                            hideSubmitter: true,
-                        })}
-                    </ProContainerItem>
-                );
-
-            default:
-                return null;
-        }
-    };
-
-    const getFields = (fields?: ProFormCardField<FormVM>[]): React.ReactNode => {
-        if (!fields?.length) return null;
-
-        const hiddenFields = fields.filter((x) => x.hidden);
-        const visibleFields = fields.filter((x) => !x.hidden);
-        return (
-            <>
-                <div className='pro-form-card-hidden-fields'>{hiddenFields.map((item) => getField(item))}</div>
-                {visibleFields
-                    .filter((x) => !x.hidden)
-                    .map((item, index) => {
-                        return (
-                            <Col key={index} span={item.span || span}>
-                                {getField(item)}
-                            </Col>
-                        );
-                    })}
-            </>
-        );
-    };
-
-    const getFieldsRow = ({
-        children,
-        title,
-        titleExtraRender,
-        hideSubmitter,
-    }: {
-        title?: React.ReactNode;
-        titleExtraRender?: React.ReactNode;
-        children: React.ReactNode;
-        hideSubmitter?: boolean;
-    }) => {
-        return (
-            <Row gutter={[14, 0]}>
-                {(title || titleExtraRender || (!hideSubmitter && isSubmitterTop)) && (
-                    <Col span={24}>
-                        <div className='pro-form-card-title'>
-                            {title ? <div className='pro-form-card-title-text'>{title}</div> : null}
-                            {titleExtraRender}
-                            {!hideSubmitter && isSubmitterTop ? submitterButtons : null}
-                        </div>
-                    </Col>
-                )}
-                {children}
-                {!hideSubmitter && isSubmitterBottom ? <Col span={24}>{submitterButtons}</Col> : null}
-            </Row>
-        );
-    };
-
     const isSubmitterField = submitter !== false && fields?.some((x) => x.type === 'submitter');
 
     const isSubmitterTop = !isSubmitterField && submitter !== false && submitter?.position === 'top';
@@ -372,8 +245,6 @@ const ProFormCard = <FormVM extends Record<string, any>>({
             </div>
         ) : null;
 
-    const children = getFields(fields);
-
     if (hidden) return null;
 
     return (
@@ -381,12 +252,25 @@ const ProFormCard = <FormVM extends Record<string, any>>({
             <ProContainerItem className='pro-form-card' transparent={transparent}>
                 <Spin spinning={loading || false}>
                     <ProForm submitter={false} form={form}>
-                        {getFieldsRow({ children, title, titleExtraRender })}
+                        <ProFieldRow<FormVM>
+                            title={title}
+                            titleExtraRender={titleExtraRender}
+                            isSubmitterBottom={isSubmitterBottom}
+                            isSubmitterTop={isSubmitterTop}
+                            span={span}
+                            submitterButtons={submitterButtons}
+                            submitterDisabled={submitter === false}
+                            fields={fields}
+                        />
                     </ProForm>
                 </Spin>
             </ProContainerItem>
         </ConfigProvider>
     );
 };
+
+ProFormCard.FieldRow = ProFieldRow;
+ProFormCard.FieldList = ProFields;
+ProFormCard.Field = ProField;
 
 export default ProFormCard;

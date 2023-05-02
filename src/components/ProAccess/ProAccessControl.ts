@@ -20,18 +20,18 @@ type AccessActionType = 'read' | 'write';
 type AccessListType = 'white' | 'black';
 
 export const useProAccess = <
-    AccessKey extends string,
+    KeyList extends string[],
     Item extends Record<Name, Value>,
     Name extends Extract<KeyOf<Item>, string> = Extract<KeyOf<Item>, string>,
     Value extends Item[Name] = Item[Name],
 >(
     item: Partial<Item>,
-    keys: AccessKey[],
+    keys: KeyList,
     falseAccess: (item: Partial<Item>) => boolean,
     trueAccess: (item: Partial<Item>) => boolean,
-    accessControl: ProAccessControl<AccessKey, Item, Name, Value>,
+    accessControl: ProAccessControl<KeyList[number], Item, Name, Value>,
 ) => {
-    type AccessReturnType = Record<`read${AccessKey}` | `write${AccessKey}`, boolean>;
+    type AccessReturnType = Record<`read${KeyList[number]}` | `write${KeyList[number]}`, boolean>;
 
     return keys.reduce<AccessReturnType>((access, key) => {
         if (falseAccess(item))

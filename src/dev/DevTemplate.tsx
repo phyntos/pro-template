@@ -71,15 +71,19 @@ const DevTemplate = () => {
                 fields={[
                     {
                         type: 'text',
-                        name: 'login',
-                        label: 'Email',
-                        rules: [{ required: true, message: 'Введите почту' }],
+                        props: {
+                            name: 'login',
+                            label: 'Email',
+                            rules: [{ required: true, message: 'Введите почту' }],
+                        },
                     },
                     {
                         type: 'password',
-                        name: 'password',
-                        label: 'Пароль',
-                        rules: [{ required: true, message: 'Введите пароль' }],
+                        props: {
+                            name: 'password',
+                            label: 'Пароль',
+                            rules: [{ required: true, message: 'Введите пароль' }],
+                        },
                     },
                 ]}
                 submitter={(onSubmit) => (
@@ -87,6 +91,7 @@ const DevTemplate = () => {
                         Войти
                     </ProButton>
                 )}
+                width={500}
                 render={({ fields, header, submitter }) => (
                     <>
                         {header}
@@ -99,23 +104,27 @@ const DevTemplate = () => {
                         {submitter}
                     </>
                 )}
+                tools={{ themeChanger: true }}
             />
         );
 
     return (
         <DevTemplateContext.Provider value={{ role, type, setRole, setType }}>
             <ProContainer
-                defaultKey='dev'
-                menuItems={[
-                    {
-                        key: 'dev',
-                        label: 'DEV',
-                        roles: ['root'],
-                        path: '/dev',
-                        element: <DevItem />,
-                        icon: <ToolOutlined />,
-                    },
-                ]}
+                routes={{
+                    items: [
+                        {
+                            key: 'dev',
+                            label: 'DEV',
+                            roles: ['root'],
+                            path: '/dev',
+                            element: <DevItem />,
+                            icon: <ToolOutlined />,
+                        },
+                    ],
+                    defaultKey: 'dev',
+                    profileKey: 'dev',
+                }}
                 userData={{
                     role: 'root',
                     roleNames: {
@@ -124,18 +133,21 @@ const DevTemplate = () => {
                     fullName: 'ROOT NAME',
                 }}
                 logo={(size) => <DevLogo size={size} />}
-                onLogout={() => setLoggedIn(false)}
-                profileKey='dev'
-                // transparentContent
-                extraHeader={'asd'}
-                localeChanger={{
-                    labels: { kz: 'КАЗ', ru: 'РУС' },
-                    lang: lang,
-                    locales: {
-                        kz: kkKZ,
-                        ru: ruRU,
+                tools={{
+                    logout: {
+                        onLogout: () => setLoggedIn(false),
                     },
-                    onChange: setLang,
+                    extraHeader: 'asd',
+                    localeChanger: {
+                        labels: { kz: 'КАЗ', ru: 'РУС' },
+                        lang: lang,
+                        locales: {
+                            kz: kkKZ,
+                            ru: ruRU,
+                        },
+                        onChange: setLang,
+                    },
+                    themeChanger: true,
                 }}
             />
         </DevTemplateContext.Provider>

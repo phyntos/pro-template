@@ -15,6 +15,8 @@ import ProTabGroup from './components/ProTabGroup/ProTabGroup';
 import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import { numberNormalize } from './functions';
 import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
+import ProTools from './components/ProContainer/components/ProTools';
+import useProRoutes from './components/ProContainer/components/useProRoutes';
 
 export {
     ProContainer,
@@ -40,4 +42,6 @@ export {
     ProLocaleProvider,
     ProLocaleChanger,
     useProLocale,
+    ProTools,
+    useProRoutes,
 };

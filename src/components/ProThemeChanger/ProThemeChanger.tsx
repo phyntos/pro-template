@@ -35,12 +35,17 @@ export const ProThemeProvider = ({
         }
     }, [theme, storage]);
 
+    useEffect(() => {
+        const element = document.body;
+        if (theme === 'dark') element.classList.add('dark-mode');
+        else element.classList.remove('dark-mode');
+    }, [theme]);
+
     return (
         <ProThemeContext.Provider value={{ setTheme, theme }}>
             <ConfigProvider
                 theme={{ algorithm: theme === 'dark' ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm }}
             >
-                <input id='theme' value={theme} style={{ display: 'none' }} />
                 {children}
             </ConfigProvider>
         </ProThemeContext.Provider>

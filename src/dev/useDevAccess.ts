@@ -7,7 +7,7 @@ type DevAccessItem = {
     role: DevAppRole;
 };
 
-const accessKeys = ['Access'] as const;
+const accessKeys = ['Access', 'SecondAccess'] as const;
 
 type AccessKey = Extract<(typeof accessKeys)[number], string>;
 
