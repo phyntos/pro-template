@@ -111,6 +111,12 @@ export default class ProAccessControl<
         const dataList = Object.entries(data) as [Name, Value][];
 
         // localStorage.setItem(this.moduleName + '_data', JSON.stringify(data));
+        const isIncludes = this.accessList.some((x) => x.key === key);
+
+        if (!isIncludes) {
+            return { read: true, write: true };
+        }
+
         const groups = groupByArray(
             this.accessList.filter((x) => x.key === key),
             'group',
