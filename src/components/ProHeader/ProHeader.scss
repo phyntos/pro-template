@@ -1,11 +1,11 @@
 .pro-header.pro-container-item {
-    height: 64px;
+    // height: 64px;
     min-height: 64px;
-    padding-top: 0;
-    padding-bottom: 0;
+    // padding-top: 0;
+    // padding-bottom: 0;
 
     &.pro-container-item-transparent {
-        height: 36px;
+        // height: 36px;
         min-height: 36px;
     }
 
@@ -16,6 +16,7 @@
     .pro-header-typography.pro-header-title {
         margin-top: 0;
         margin-bottom: 0;
+        word-break: normal;
     }
 
     .pro-header-actions-space {
@@ -45,4 +46,29 @@
 
 .pro-header-info-child {
     cursor: pointer;
+}
+
+.pro-header-limited {
+    .pro-header-actions-col {
+        order: 2;
+    }
+    .pro-header-extra-col {
+        order: 3;
+    }
+}
+
+.pro-header-title-col {
+    order: 1;
+    margin-right: auto;
+}
+
+.pro-header-extra-col {
+    order: 2;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.pro-header-actions-col {
+    order: 3;
+    margin-left: auto;
 }

@@ -2,9 +2,10 @@ import { ArrowLeftOutlined, DownOutlined, QuestionCircleOutlined, ReloadOutlined
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Button, Col, ColProps, ConfigProvider, Dropdown, Form, Row, Space, Typography } from 'antd';
 import Popover from 'antd/es/popover';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { numberNormalize } from '../../functions';
+import useWindowSize from '../../hooks/useWindowSize';
 import ProButton from '../ProButton/ProButton';
 import { ProContainerItem } from '../ProContainer/ProContainer';
 import './ProHeader.scss';
@@ -260,13 +261,42 @@ const ProHeader = ({
     transparent,
 }: ProHeaderProps) => {
     const navigate = useNavigate();
+    const [isLimited, setIsLimited] = useState(false);
+    const { width, isMobile } = useWindowSize();
+
+    useEffect(() => {
+        let colWidths = 0;
+
+        const titleCol = document.querySelector<HTMLElement>('.pro-header-title-col');
+        const extraCol = document.querySelector<HTMLElement>('.pro-header-extra-col');
+        const actionsCol = document.querySelector<HTMLElement>('.pro-header-actions-col');
+
+        if (titleCol) {
+            colWidths += titleCol.offsetWidth;
+        }
+        if (extraCol) {
+            colWidths += extraCol.offsetWidth;
+        }
+        if (actionsCol) {
+            colWidths += actionsCol.offsetWidth;
+        }
+
+        const proHeader = document.querySelector<HTMLElement>('.pro-header');
+
+        if (proHeader && colWidths) {
+            setIsLimited(proHeader.offsetWidth - 20 - colWidths < 0);
+        }
+    }, [width]);
 
     return (
         <ConfigProvider prefixCls='pro-header'>
-            <ProContainerItem className='pro-header' transparent={transparent}>
-                <Row align='middle' justify='space-between' wrap={false}>
-                    <Col {...titleColProps}>
-                        <Space size={16}>
+            <ProContainerItem
+                className={'pro-header' + (isLimited ? ' pro-header-limited' : '')}
+                transparent={transparent}
+            >
+                <Row align='middle' gutter={[8, 8]} justify='space-between' wrap>
+                    <Col {...titleColProps} className='pro-header-title-col'>
+                        <Space size={16} wrap>
                             {(back || title) && (
                                 <Space>
                                     {back && (
@@ -289,20 +319,25 @@ const ProHeader = ({
                                     )}
                                 </Space>
                             )}
-                            {infos && infoDirection === 'horizontal' && infos.length > 0 && (
+                            {!isMobile && infos && infoDirection === 'horizontal' && infos.length > 0 && (
                                 <Space wrap size={[5, 0]} align='center'>
                                     {infos.map((item) => (
                                         <InfoItem key={item.key} item={item} direction='horizontal' />
                                     ))}
                                 </Space>
                             )}
-                            {infoDirection === 'vertical' &&
+                            {!isMobile &&
+                                infoDirection === 'vertical' &&
                                 infos?.map((item) => <InfoItem key={item.key} item={item} direction='vertical' />)}
                             {titleExtraRender}
                         </Space>
                     </Col>
-                    {extraCols}
-                    <Col {...actionsColProps}>
+                    <Col className='pro-header-extra-col'>
+                        <Row align='middle' gutter={[8, 8]} justify='center' wrap>
+                            {extraCols}
+                        </Row>
+                    </Col>
+                    <Col {...actionsColProps} className='pro-header-actions-col'>
                         <Space className='pro-header-actions-space'>
                             {onReload && <Button icon={<ReloadOutlined />} onClick={onReload} />}
                             {actions}

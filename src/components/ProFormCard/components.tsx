@@ -8,8 +8,9 @@ import {
 import { Col, Row } from 'antd';
 import React from 'react';
 import { numberNormalize, regexNormalize } from '../../functions';
-import { ProFormCardField } from './ProFormCard';
+import useWindowSize from '../../hooks/useWindowSize';
 import { ProContainerItem } from '../ProContainer/ProContainer';
+import { ProFormCardField } from './ProFormCard';
 
 export const ProField = <FormVM extends Record<string, any>>({
     field,
@@ -103,10 +104,13 @@ export const ProFields = <FormVM extends Record<string, any>>({
     submitterButtons?: React.ReactNode;
     span?: string | number;
 }) => {
+    const { isMobile } = useWindowSize();
+
     if (!fields?.length) return null;
 
     const hiddenFields = fields.filter((x) => x.hidden);
     const visibleFields = fields.filter((x) => !x.hidden);
+
     return (
         <>
             <div className='pro-form-card-hidden-fields'>
@@ -124,11 +128,11 @@ export const ProFields = <FormVM extends Record<string, any>>({
                 .filter((x) => !x.hidden)
                 .map((item, index) => {
                     return (
-                        <Col key={index} span={item.span || span}>
+                        <Col key={index} span={isMobile ? 24 : item.span || span}>
                             <ProField
                                 field={item}
                                 submitterButtons={submitterButtons}
-                                span={span}
+                                span={isMobile ? 24 : span}
                                 submitterDisabled={submitterDisabled}
                             />
                         </Col>

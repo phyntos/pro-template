@@ -54,7 +54,7 @@ export const useDevTemplateContext = (context?: { type?: DevAppType; role?: DevA
 };
 
 const DevTemplate = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
     const [role, setRole] = useState<DevAppRole>('contact');
     const [type, setType] = useState<DevAppType>('dev');
     const [lang, setLang] = useState<'kz' | 'ru'>('kz');
@@ -115,7 +115,7 @@ const DevTemplate = () => {
                     items: [
                         {
                             key: 'dev',
-                            label: 'DEV',
+                            label: 'DEV DEV DEV DEV',
                             roles: ['root'],
                             path: '/dev',
                             element: <DevItem />,

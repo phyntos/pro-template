@@ -17,6 +17,7 @@ import { numberNormalize } from './functions';
 import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
 import ProTools from './components/ProContainer/components/ProTools';
 import useProRoutes from './components/ProContainer/components/useProRoutes';
+import useWindowSize from './hooks/useWindowSize';
 
 export {
     ProContainer,
@@ -44,4 +45,5 @@ export {
     useProLocale,
     ProTools,
     useProRoutes,
+    useWindowSize,
 };

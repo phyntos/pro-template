@@ -108,6 +108,10 @@
     }
 }
 
+.pro-tools-mobile .pro-container-header-user {
+    text-align: left;
+}
+
 .pro-container-header-user {
     display: flex;
     min-width: 100px;
@@ -129,6 +133,14 @@
     margin-bottom: 14px;
     &:last-child {
         margin-bottom: 0;
+    }
+}
+
+.pro-container-breadcrumb ol {
+    flex-wrap: nowrap !important;
+    li {
+        word-break: keep-all;
+        white-space: nowrap;
     }
 }
 

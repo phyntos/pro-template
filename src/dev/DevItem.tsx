@@ -13,7 +13,7 @@ const DevItem = () => {
     const { readAccess, writeAccess } = useDevAccess('Access');
     useDevTemplateContext({ type: tab, role });
 
-    useProContainer({ title: 'dev', transparent: !transparent, loading });
+    useProContainer({ title: 'dev dev dev dev', transparent: !transparent, loading });
 
     const data = useMemo(
         () => ({ dev_select: tab, dev_text: 123, dev_number: 1123, dev_date: '2022-12-12T10:45' }),
@@ -42,8 +42,8 @@ const DevItem = () => {
                 ]}
                 infos={[
                     {
-                        label: 'DEV',
-                        value: 'dev',
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
                         key: 'dev',
                         children: [
                             {
@@ -53,6 +53,31 @@ const DevItem = () => {
                                 children: [{ label: 'DEV', value: 'dev', key: 'dev', hidden: true }],
                             },
                         ],
+                    },
+                    {
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
+                        key: 'dev1',
+                    },
+                    {
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
+                        key: 'dev2',
+                    },
+                    {
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
+                        key: 'dev3',
+                    },
+                    {
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
+                        key: 'dev4',
+                    },
+                    {
+                        label: 'DEV DEV DEV',
+                        value: 'dev dev dev',
+                        key: 'dev5',
                     },
                 ]}
                 onReload={() => {
@@ -103,6 +128,9 @@ const DevItem = () => {
                     </ProButton>
                 }
                 transparent={transparent}
+                // infoDirection='horizontal'
+                // actionsColProps={{ span: 6 }}
+                // titleColProps={{ span: 6 }}
             />
             <ProWorkflow
                 transparent={transparent}

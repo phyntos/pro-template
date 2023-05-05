@@ -177,7 +177,7 @@ const ProContainer = <
                         </Sider>
                         <Layout>
                             <Header style={{ backgroundColor: token.colorBgContainer }}>
-                                <Space size={16}>
+                                <Space size={16} className='pro-container-header-title'>
                                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                                         className: 'icon-button pro-container-trigger',
                                         onClick: () => setCollapsed((collapsed) => !collapsed),

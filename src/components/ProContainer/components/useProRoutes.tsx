@@ -1,8 +1,10 @@
 import { Breadcrumb, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
-import { ProContainerItem } from '../ProContainer';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { ProContainerItem } from '../ProContainer';
+import useWindowSize from '../../../hooks/useWindowSize';
+import { BreadcrumbItemType } from 'antd/es/breadcrumb/Breadcrumb';
 
 type ProContainerMenuItemWithChildren<ItemKey extends string, Roles extends string> = {
     key: ItemKey;
@@ -131,6 +133,23 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
         else setActiveKey(defaultKey);
     }, [location.pathname, filteredItems, role, defaultKey]);
 
+    const [isHideBreadcrumbs, setIsHideBreadcrumbs] = useState(false);
+    const { width } = useWindowSize();
+
+    useEffect(() => {
+        let colWidths = 0;
+
+        const headerTitle = document.querySelector<HTMLElement>('.pro-container-header-title');
+
+        if (headerTitle) {
+            colWidths += headerTitle.offsetWidth;
+        }
+
+        if (colWidths && width) {
+            setIsHideBreadcrumbs(width - 48 - 14 - colWidths - 20 < 0);
+        }
+    }, [width]);
+
     const specialDefaultKey = role ? specialDefaultKeys?.[role] : undefined;
 
     const defaultPath = getPath(specialDefaultKey || defaultKey)?.path;
@@ -183,26 +202,31 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
         </Spin>
     );
 
-    const breadcrumbs = (
-        <Breadcrumb>
-            {activeItemParents.length
-                ? activeItemParents.map((item, index) => (
-                      <Breadcrumb.Item key={item.key}>
-                          {(title || index !== activeItemParents.length - 1) && item.path ? (
-                              <Link to={item.path}>{item.label}</Link>
-                          ) : (
-                              item.label
-                          )}
-                      </Breadcrumb.Item>
-                  ))
-                : null}
-            {title ? <Breadcrumb.Item>{title}</Breadcrumb.Item> : null}
-        </Breadcrumb>
-    );
+    const breadcrumbsItems: BreadcrumbItemType[] = activeItemParents.map((item, index) => ({
+        title:
+            (title || index !== activeItemParents.length - 1) && item.path ? (
+                <Link to={item.path}>{item.label}</Link>
+            ) : (
+                item.label
+            ),
+        key: item.key,
+    }));
+
+    if (title) {
+        breadcrumbsItems.push({ title });
+    }
 
     const menuItems = filteredItems.map(menuItemMap);
 
-    return [routes, { breadcrumbs, menuItems, profilePath, activeKey }] as const;
+    return [
+        routes,
+        {
+            breadcrumbs: isHideBreadcrumbs ? null : <Breadcrumb items={breadcrumbsItems} />,
+            menuItems,
+            profilePath,
+            activeKey,
+        },
+    ] as const;
 };
 
 export default useProRoutes;

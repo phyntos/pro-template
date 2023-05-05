@@ -79,7 +79,10 @@ const ProThemeChanger = ({
 
     return React.createElement(theme === 'dark' ? darkIcon : lightIcon, {
         className: 'icon-button',
-        onClick: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+        onClick: (e) => {
+            e.stopPropagation();
+            setTheme(theme === 'dark' ? 'light' : 'dark');
+        },
     });
 };
 
