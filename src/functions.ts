@@ -67,7 +67,7 @@ export const numberNormalize =
 
         let numberState: 'current' | 'prev' | 'zero' = 'current';
 
-        if (Number.isNaN(Number(value))) {
+        if (Number.isNaN(Number(value)) && value !== '-') {
             numberState = 'prev';
             if (Number.isNaN(Number(prevValue))) numberState = 'zero';
         }
@@ -95,12 +95,16 @@ export const numberNormalize =
         )
             numberValue = toFixed(number, fractionDigits);
 
+        if (value[0] === '0' && /^\d+$/.test(value[1])) {
+            numberValue = numberValue.substring(1);
+        }
+
         if (!isPositive) {
             if (value === '0-') {
                 numberValue = '-';
             }
-            if (value === '-') {
-                numberValue = '0';
+            if (value[0] === '-' && value[1] === '0' && /^\d+$/.test(value[2])) {
+                numberValue = numberValue.slice(0, 1) + numberValue.slice(2);
             }
         }
 
