@@ -7,10 +7,11 @@ import {
 } from '@ant-design/pro-components';
 import { Col, Row } from 'antd';
 import React from 'react';
-import { numberNormalize, regexNormalize } from '../../functions';
+import { regexNormalize } from '../../functions';
 import useWindowSize from '../../hooks/useWindowSize';
 import { ProContainerItem } from '../ProContainer/ProContainer';
 import { ProFormCardField } from './ProFormCard';
+import ProFormNumber from './ProFormNumber';
 
 export const ProField = <FormVM extends Record<string, any>>({
     field,
@@ -42,17 +43,12 @@ export const ProField = <FormVM extends Record<string, any>>({
             return <ProFormTextArea {...field.props} disabled={submitterDisabled || field.props.disabled} />;
         case 'number':
             return (
-                <ProFormText
-                    {...field.props}
-                    disabled={submitterDisabled || field.props.disabled}
-                    normalize={numberNormalize({
-                        isInteger: field.isInteger,
-                        isPositive: field.isPositive,
-                        max: field.max,
-                        min: field.min,
-                        fractionDigits: field.fractionDigits,
-                        withSeparator: field.withSeparator,
-                    })}
+                <ProFormNumber
+                    {...field}
+                    props={{
+                        ...field.props,
+                        disabled: submitterDisabled || field.props.disabled,
+                    }}
                 />
             );
         case 'regex':

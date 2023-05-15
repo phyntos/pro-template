@@ -183,7 +183,7 @@ const DevItem = () => {
                         },
                         {
                             type: 'number',
-                            min: -1,
+                            // min: -1,
                             withSeparator: true,
                             props: {
                                 label: 'DEV Number',
@@ -219,7 +219,7 @@ const DevItem = () => {
                         },
                         {
                             type: 'number',
-                            min: -1,
+                            // min: -1,
                             props: {
                                 label: 'DEV Number',
                                 name: 'dev_number',

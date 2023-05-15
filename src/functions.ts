@@ -40,10 +40,9 @@ export type NumberNormalizeArgs = {
     min?: number;
     max?: number;
     fractionDigits?: number;
-    withSeparator?: boolean;
 };
 
-const formatNumberSeparator = (value: string) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+export const formatSeparator = (value: string) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 export const numberNormalize =
     ({
@@ -52,9 +51,8 @@ export const numberNormalize =
         min,
         max,
         fractionDigits,
-        withSeparator,
     }: NumberNormalizeArgs): ((value: string, prevValue: string) => any) =>
-    (value: string, prevValue) => {
+    (value, prevValue) => {
         if (typeof value === 'undefined') return undefined;
 
         value = value.replaceAll(' ', '');
@@ -106,7 +104,6 @@ export const numberNormalize =
             }
         }
 
-        if (withSeparator) return formatNumberSeparator(numberValue);
         return numberValue;
     };
 export type RegexNormalizeArgs = { regex?: RegExp | RegExp[]; toUpper?: boolean };

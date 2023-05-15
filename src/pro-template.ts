@@ -1,6 +1,5 @@
 import ProAccessControl, { useProAccess } from './components/ProAccess/ProAccessControl';
 import ProAntProvider from './components/ProAntProvider';
-import ProThemeChanger, { ProThemeProvider, useProTheme } from './components/ProThemeChanger/ProThemeChanger';
 import ProAuth from './components/ProAuth/ProAuth';
 import ProButton from './components/ProButton/ProButton';
 import ProContainer, {
@@ -8,15 +7,17 @@ import ProContainer, {
     useProContainer,
     useProFormCardInstance,
 } from './components/ProContainer/ProContainer';
-import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
-import ProHeader, { ProActionsDropdown } from './components/ProHeader/ProHeader';
-import ProLogo from './components/ProLogo/ProLogo';
-import ProTabGroup from './components/ProTabGroup/ProTabGroup';
-import ProWorkflow from './components/ProWorkflow/ProWorkflow';
-import { numberNormalize } from './functions';
-import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
 import ProTools from './components/ProContainer/components/ProTools';
 import useProRoutes from './components/ProContainer/components/useProRoutes';
+import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
+import ProFormNumber, { SeparatorInput } from './components/ProFormCard/ProFormNumber';
+import ProHeader, { ProActionsDropdown } from './components/ProHeader/ProHeader';
+import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
+import ProLogo from './components/ProLogo/ProLogo';
+import ProTabGroup from './components/ProTabGroup/ProTabGroup';
+import ProThemeChanger, { ProThemeProvider, useProTheme } from './components/ProThemeChanger/ProThemeChanger';
+import ProWorkflow from './components/ProWorkflow/ProWorkflow';
+import { formatSeparator, numberNormalize } from './functions';
 import useWindowSize from './hooks/useWindowSize';
 
 export {
@@ -46,4 +47,7 @@ export {
     ProTools,
     useProRoutes,
     useWindowSize,
+    formatSeparator,
+    SeparatorInput,
+    ProFormNumber,
 };

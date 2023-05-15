@@ -108,6 +108,7 @@ export type ProFormCardTextAreaField<FormVM extends Record<string, any>> = {
 export type ProFormCardNumberField<FormVM extends Record<string, any>> = {
     type: 'number';
     props: FormItemProps<Omit<ProFormFieldItemProps<InputProps, InputRef>, 'normalize'>, FormVM>;
+    withSeparator?: boolean;
 } & NumberNormalizeArgs;
 
 export type ProFormCardRegExpField<FormVM extends Record<string, any>> = {
