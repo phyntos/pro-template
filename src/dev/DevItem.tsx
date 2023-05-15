@@ -169,8 +169,8 @@ const DevItem = () => {
                     transparent={transparent}
                     form={form}
                     actions={actions}
-                    // submitter={{ position: 'top' }}
-                    submitter={false}
+                    submitter={{ position: 'top' }}
+                    // submitter={false}
                     span={8}
                     fields={[
                         {
@@ -184,6 +184,7 @@ const DevItem = () => {
                         {
                             type: 'number',
                             min: -1,
+                            withSeparator: true,
                             props: {
                                 label: 'DEV Number',
                                 name: 'dev_number',

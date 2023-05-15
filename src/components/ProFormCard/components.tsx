@@ -51,6 +51,7 @@ export const ProField = <FormVM extends Record<string, any>>({
                         max: field.max,
                         min: field.min,
                         fractionDigits: field.fractionDigits,
+                        withSeparator: field.withSeparator,
                     })}
                 />
             );
@@ -104,12 +105,18 @@ export const ProFields = <FormVM extends Record<string, any>>({
     submitterButtons?: React.ReactNode;
     span?: string | number;
 }) => {
-    const { isMobile } = useWindowSize();
+    const { isMobile, isTablet } = useWindowSize();
 
     if (!fields?.length) return null;
 
     const hiddenFields = fields.filter((x) => x.hidden);
     const visibleFields = fields.filter((x) => !x.hidden);
+
+    const getSpan = (span?: string | number | undefined) => {
+        if (isMobile) return 24;
+        if (isTablet && (span ? Number(span) < 12 : true)) return 12;
+        return span;
+    };
 
     return (
         <>
@@ -119,7 +126,6 @@ export const ProFields = <FormVM extends Record<string, any>>({
                         key={index}
                         field={item}
                         submitterButtons={submitterButtons}
-                        span={span}
                         submitterDisabled={submitterDisabled}
                     />
                 ))}
@@ -128,11 +134,11 @@ export const ProFields = <FormVM extends Record<string, any>>({
                 .filter((x) => !x.hidden)
                 .map((item, index) => {
                     return (
-                        <Col key={index} span={isMobile ? 24 : item.span || span}>
+                        <Col key={index} span={getSpan(item.span || span)}>
                             <ProField
                                 field={item}
                                 submitterButtons={submitterButtons}
-                                span={isMobile ? 24 : span}
+                                span={getSpan(span)}
                                 submitterDisabled={submitterDisabled}
                             />
                         </Col>
