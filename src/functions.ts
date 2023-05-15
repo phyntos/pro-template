@@ -126,7 +126,7 @@ export const regexNormalize =
             }
         });
 
-        if (isIncorrect) return prevValue;
+        if (isIncorrect) return prevValue || '';
 
         return inputValue;
     };

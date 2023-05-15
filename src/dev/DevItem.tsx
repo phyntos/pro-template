@@ -191,6 +191,17 @@ const DevItem = () => {
                             },
                         },
                         {
+                            type: 'regex',
+                            regex: new RegExp('^[0-9]+$'),
+                            props: {
+                                name: 'dev_number1',
+                                label: 'DEV Number',
+                                fieldProps: {
+                                    maxLength: 12,
+                                },
+                            },
+                        },
+                        {
                             type: 'select',
                             props: {
                                 label: 'DEV Select',
