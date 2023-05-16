@@ -188,6 +188,7 @@ const DevItem = () => {
                             props: {
                                 label: 'DEV Number',
                                 name: 'dev_number',
+                                fieldProps: { prefix: '₸' },
                             },
                         },
                         {

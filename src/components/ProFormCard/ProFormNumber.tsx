@@ -8,6 +8,7 @@ export const SeparatorInput = ({
     value = '',
     onChange,
     withSeparator,
+    ...props
 }: {
     value?: string;
     onChange?: (value: string) => void;
@@ -18,7 +19,7 @@ export const SeparatorInput = ({
         onChange?.(value);
     };
 
-    return <Input value={withSeparator ? formatSeparator(value) : value} onChange={onNumberChange} />;
+    return <Input value={withSeparator ? formatSeparator(value) : value} onChange={onNumberChange} {...props} />;
 };
 
 const ProFormNumber = (field: ProFormCardNumberField<any>) => {
