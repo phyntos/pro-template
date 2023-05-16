@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { numberNormalize } from '../../functions';
 import useWindowSize from '../../hooks/useWindowSize';
 import ProButton from '../ProButton/ProButton';
-import { ProContainerItem } from '../ProContainer/ProContainer';
 import './ProHeader.scss';
+import { ProContainerItem } from '../../pro-template';
 
 export type InfoItem<T = string> = {
     key?: T;

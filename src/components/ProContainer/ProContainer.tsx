@@ -7,6 +7,7 @@ import { ProLogoSize } from '../ProLogo/ProLogo';
 import './ProContainer.scss';
 import ProTools, { ProToolsProps } from './components/ProTools';
 import useProRoutes, { ProRoutesProps } from './components/useProRoutes';
+import ProContainerItem from './components/ProContainerItem';
 
 const { Header, Sider, Content } = Layout;
 
@@ -100,29 +101,6 @@ export const useProFormCardInstance = <T extends Record<string, any>>(id: string
     return [findForm?.form, findForm?.actions] as [FormInstance<T>, ProFormCardActions<T>];
 };
 
-export const ProContainerItem = ({
-    children,
-    className,
-    transparent,
-}: {
-    children?: React.ReactNode;
-    className?: string;
-    transparent?: boolean;
-}) => {
-    const { token } = theme.useToken();
-
-    return (
-        <div
-            style={{ backgroundColor: !transparent ? token.colorBgContainer : undefined, color: token.colorText }}
-            className={['pro-container-item', className, transparent && 'pro-container-item-transparent']
-                .filter(Boolean)
-                .join(' ')}
-        >
-            {children}
-        </div>
-    );
-};
-
 export type UserData<Roles extends string> = {
     role: Roles | null;
     fullName?: string | null;
@@ -158,6 +136,7 @@ const ProContainer = <
         ...routes,
         items: routes?.items || [],
     });
+    console.log({ menu: token });
 
     return (
         <ConfigProvider prefixCls='pro-container' iconPrefixCls='pro-container-icon'>
@@ -176,7 +155,12 @@ const ProContainer = <
                             />
                         </Sider>
                         <Layout>
-                            <Header style={{ backgroundColor: token.colorBgContainer }}>
+                            <Header
+                                style={{
+                                    backgroundColor: token.colorBgContainer,
+                                    borderBottom: '1px solid ' + token.colorBorderSecondary,
+                                }}
+                            >
                                 <Space size={16} className='pro-container-header-title'>
                                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                                         className: 'icon-button pro-container-trigger',

@@ -1,7 +1,7 @@
 import { ConfigProvider, Steps } from 'antd';
 import React from 'react';
-import { ProContainerItem } from '../ProContainer/ProContainer';
 import './ProWorkflow.scss';
+import { ProContainerItem } from '../../pro-template';
 
 export type WorkflowVM<StatusCodes> = {
     active: boolean;

@@ -14,9 +14,10 @@ import { TextAreaRef } from 'antd/lib/input/TextArea';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { NumberNormalizeArgs, RegexNormalizeArgs, deepComparison } from '../../functions';
 import ProButton from '../ProButton/ProButton';
-import { ProContainerItem, useSetProFormCardInstance } from '../ProContainer/ProContainer';
+import { useSetProFormCardInstance } from '../ProContainer/ProContainer';
 import './ProFormCard.scss';
 import { ProFields, ProFieldRow, ProField } from './components';
+import { ProContainerItem } from '../../pro-template';
 
 export const useProFormCard = <FormVM extends Record<string, any>>({
     id,

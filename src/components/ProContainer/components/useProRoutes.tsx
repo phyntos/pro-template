@@ -2,9 +2,9 @@ import { Breadcrumb, Spin } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { ProContainerItem } from '../ProContainer';
 import useWindowSize from '../../../hooks/useWindowSize';
 import { BreadcrumbItemType } from 'antd/es/breadcrumb/Breadcrumb';
+import ProContainerItem from './ProContainerItem';
 
 type ProContainerMenuItemWithChildren<ItemKey extends string, Roles extends string> = {
     key: ItemKey;

@@ -9,9 +9,9 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import { regexNormalize } from '../../functions';
 import useWindowSize from '../../hooks/useWindowSize';
-import { ProContainerItem } from '../ProContainer/ProContainer';
 import { ProFormCardField } from './ProFormCard';
 import ProFormNumber from './ProFormNumber';
+import { ProContainerItem } from '../../pro-template';
 
 export const ProField = <FormVM extends Record<string, any>>({
     field,

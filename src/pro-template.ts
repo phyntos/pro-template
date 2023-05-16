@@ -2,11 +2,8 @@ import ProAccessControl, { useProAccess } from './components/ProAccess/ProAccess
 import ProAntProvider from './components/ProAntProvider';
 import ProAuth from './components/ProAuth/ProAuth';
 import ProButton from './components/ProButton/ProButton';
-import ProContainer, {
-    ProContainerItem,
-    useProContainer,
-    useProFormCardInstance,
-} from './components/ProContainer/ProContainer';
+import ProContainer, { useProContainer, useProFormCardInstance } from './components/ProContainer/ProContainer';
+import ProContainerItem from './components/ProContainer/components/ProContainerItem';
 import ProTools from './components/ProContainer/components/ProTools';
 import useProRoutes from './components/ProContainer/components/useProRoutes';
 import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
