@@ -136,7 +136,6 @@ const ProContainer = <
         ...routes,
         items: routes?.items || [],
     });
-    console.log({ menu: token });
 
     return (
         <ConfigProvider prefixCls='pro-container' iconPrefixCls='pro-container-icon'>
