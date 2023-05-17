@@ -71,7 +71,8 @@ const getMenuItemByString = <ItemKey extends string, Roles extends string>(
             if (menuItem.key) return menuItem;
             else continue;
         }
-        if (key.includes(item.key)) return item;
+
+        if (key.split('/').includes(item.key)) return item;
     }
     return {} as ProContainerMenuItemWithPath<ItemKey, Roles>;
 };
