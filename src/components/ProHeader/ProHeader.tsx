@@ -2,13 +2,13 @@ import { ArrowLeftOutlined, DownOutlined, QuestionCircleOutlined, ReloadOutlined
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Button, Col, ColProps, ConfigProvider, Dropdown, Form, Row, Space, Typography } from 'antd';
 import Popover from 'antd/es/popover';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { numberNormalize } from '../../functions';
-import useWindowSize from '../../hooks/useWindowSize';
+import useWindowSize, { useSelectorSize } from '../../hooks/useWindowSize';
+import { ProContainerItem } from '../../pro-template';
 import ProButton from '../ProButton/ProButton';
 import './ProHeader.scss';
-import { ProContainerItem } from '../../pro-template';
 
 export type InfoItem<T = string> = {
     key?: T;
@@ -261,32 +261,19 @@ const ProHeader = ({
     transparent,
 }: ProHeaderProps) => {
     const navigate = useNavigate();
-    const [isLimited, setIsLimited] = useState(false);
-    const { width, isMobile } = useWindowSize();
+    let isLimited = false;
+    const { isMobile } = useWindowSize();
 
-    useEffect(() => {
-        let colWidths = 0;
+    const [titleColWidth] = useSelectorSize('.pro-header-title-col');
+    const [extraColWidth] = useSelectorSize('.pro-header-extra-col');
+    const [actionsColWidth] = useSelectorSize('.pro-header-actions-col');
+    const [proHeaderWidth] = useSelectorSize('.pro-header');
 
-        const titleCol = document.querySelector<HTMLElement>('.pro-header-title-col');
-        const extraCol = document.querySelector<HTMLElement>('.pro-header-extra-col');
-        const actionsCol = document.querySelector<HTMLElement>('.pro-header-actions-col');
+    const colWidths = titleColWidth + extraColWidth + actionsColWidth;
 
-        if (titleCol) {
-            colWidths += titleCol.offsetWidth;
-        }
-        if (extraCol) {
-            colWidths += extraCol.offsetWidth;
-        }
-        if (actionsCol) {
-            colWidths += actionsCol.offsetWidth;
-        }
-
-        const proHeader = document.querySelector<HTMLElement>('.pro-header');
-
-        if (proHeader && colWidths) {
-            setIsLimited(proHeader.offsetWidth - 20 - colWidths < 0);
-        }
-    }, [width]);
+    if (proHeaderWidth) {
+        isLimited = proHeaderWidth - 20 - colWidths < 0;
+    }
 
     return (
         <ConfigProvider prefixCls='pro-header'>

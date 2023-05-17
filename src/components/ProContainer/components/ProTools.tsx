@@ -117,7 +117,7 @@ const ProTools = <Roles extends string, LangLabels extends Record<string, string
         );
 
     return (
-        <Space size={gap} style={{ color: token.colorText }}>
+        <Space size={gap} style={{ color: token.colorText }} className='pro-tools'>
             {render({
                 extraHeader,
                 localeChanger: localeChanger && <ProLocaleChanger {...localeChanger} />,

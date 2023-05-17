@@ -15,7 +15,7 @@ import ProTabGroup from './components/ProTabGroup/ProTabGroup';
 import ProThemeChanger, { ProThemeProvider, useProTheme } from './components/ProThemeChanger/ProThemeChanger';
 import ProWorkflow from './components/ProWorkflow/ProWorkflow';
 import { formatSeparator, numberNormalize } from './functions';
-import useWindowSize from './hooks/useWindowSize';
+import useWindowSize, { useSelectorSize } from './hooks/useWindowSize';
 
 export {
     ProContainer,
@@ -44,6 +44,7 @@ export {
     ProTools,
     useProRoutes,
     useWindowSize,
+    useSelectorSize,
     formatSeparator,
     SeparatorInput,
     ProFormNumber,

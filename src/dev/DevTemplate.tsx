@@ -139,7 +139,7 @@ const DevTemplate = () => {
                         },
                         {
                             key: 'dev3',
-                            label: 'DEV3',
+                            label: 'DEV3 DEV3 DEV3DEV3 DEV3 DEV3DEV3 DEV3 DEV3DEV3',
                             roles: ['root'],
                             path: '/dev3',
                             element: <DevItem />,

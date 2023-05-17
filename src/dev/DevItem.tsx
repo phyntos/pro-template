@@ -13,7 +13,11 @@ const DevItem = () => {
     const { readAccess, writeAccess } = useDevAccess('Access');
     useDevTemplateContext({ type: tab, role });
 
-    useProContainer({ title: 'dev dev dev dev', transparent: !transparent, loading });
+    useProContainer({
+        title: 'dev dev dev dev dev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev devdev dev dev dev',
+        transparent: !transparent,
+        loading,
+    });
 
     const data = useMemo(
         () => ({ dev_select: tab, dev_text: 123, dev_number: 1123, dev_date: '2022-12-12T10:45' }),

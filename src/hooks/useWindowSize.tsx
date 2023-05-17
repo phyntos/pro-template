@@ -31,4 +31,22 @@ const useWindowSize = () => {
     };
 };
 
+export const useSelectorSize = (selector: string) => {
+    const { width } = useWindowSize();
+    const [selectorSize, setSelectorSize] = useState({ width: 0, heigth: 0 });
+
+    useEffect(() => {
+        const element = document.querySelector<HTMLElement>(selector);
+
+        if (element) {
+            setSelectorSize({
+                heigth: element.offsetHeight,
+                width: element.offsetWidth,
+            });
+        }
+    }, [selector, width]);
+
+    return [selectorSize.width, selectorSize.heigth] as const;
+};
+
 export default useWindowSize;

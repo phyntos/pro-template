@@ -8,6 +8,7 @@ import './ProContainer.scss';
 import ProTools, { ProToolsProps } from './components/ProTools';
 import useProRoutes, { ProRoutesProps } from './components/useProRoutes';
 import ProContainerItem from './components/ProContainerItem';
+import { useSelectorSize } from '../../pro-template';
 
 const { Header, Sider, Content } = Layout;
 
@@ -128,6 +129,8 @@ const ProContainer = <
     const [collapsed, setCollapsed] = useState(true);
     const [forms, setForms] = useState<ProFormCardContextType[]>([]);
     const { token } = theme.useToken();
+    const [toolsWidth] = useSelectorSize('.pro-tools');
+
     const [routeComponent, { breadcrumbs, menuItems: mappedItems, profilePath, activeKey }] = useProRoutes({
         role: userData.role,
         loading,
@@ -158,9 +161,16 @@ const ProContainer = <
                                 style={{
                                     backgroundColor: token.colorBgContainer,
                                     borderBottom: '1px solid ' + token.colorBorderSecondary,
+                                    display: 'flex',
                                 }}
                             >
-                                <Space size={16} className='pro-container-header-title'>
+                                <Space
+                                    size={16}
+                                    style={{
+                                        width: `calc(100% - ${toolsWidth + 16}px)`,
+                                        overflow: 'hidden',
+                                    }}
+                                >
                                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                                         className: 'icon-button pro-container-trigger',
                                         onClick: () => setCollapsed((collapsed) => !collapsed),

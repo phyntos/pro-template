@@ -1,9 +1,8 @@
 import { Breadcrumb, Spin } from 'antd';
+import { BreadcrumbItemType } from 'antd/es/breadcrumb/Breadcrumb';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import useWindowSize from '../../../hooks/useWindowSize';
-import { BreadcrumbItemType } from 'antd/es/breadcrumb/Breadcrumb';
 import ProContainerItem from './ProContainerItem';
 
 type ProContainerMenuItemWithChildren<ItemKey extends string, Roles extends string> = {
@@ -133,23 +132,6 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
         else setActiveKey(defaultKey);
     }, [location.pathname, filteredItems, role, defaultKey]);
 
-    const [isHideBreadcrumbs, setIsHideBreadcrumbs] = useState(false);
-    const { width } = useWindowSize();
-
-    useEffect(() => {
-        let colWidths = 0;
-
-        const headerTitle = document.querySelector<HTMLElement>('.pro-container-header-title');
-
-        if (headerTitle) {
-            colWidths += headerTitle.offsetWidth;
-        }
-
-        if (colWidths && width) {
-            setIsHideBreadcrumbs(width - 48 - 14 - colWidths - 20 < 0);
-        }
-    }, [width]);
-
     const specialDefaultKey = role ? specialDefaultKeys?.[role] : undefined;
 
     const defaultPath = getPath(specialDefaultKey || defaultKey)?.path;
@@ -221,7 +203,7 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
     return [
         routes,
         {
-            breadcrumbs: isHideBreadcrumbs ? null : <Breadcrumb items={breadcrumbsItems} />,
+            breadcrumbs: <Breadcrumb items={breadcrumbsItems} />,
             menuItems,
             profilePath,
             activeKey,
