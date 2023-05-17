@@ -3,17 +3,22 @@
     width: 100vw;
     overflow: hidden;
 
-    .pro-container-menu-title-content {
-        white-space: pre-wrap;
+    .pro-container-menu .pro-container-menu-submenu-title,
+    .pro-container-menu .pro-container-menu-item {
+        white-space: unset;
+    }
+
+    .pro-container-menu-inline > .pro-container-menu-item,
+    .pro-container-menu-inline > .pro-container-menu-submenu > .pro-container-menu-submenu-title {
+        height: unset;
         line-height: normal;
     }
 
-    .pro-container-menu-inline.pro-container-menu-root .pro-container-menu-item {
-        line-height: normal;
-        height: unset;
+    .pro-container-menu-inline.pro-container-menu-root .pro-container-menu-item,
+    .pro-container-menu-inline.pro-container-menu-root .pro-container-menu-submenu-title {
+        align-items: flex-start;
         padding-top: 12px;
         padding-bottom: 12px;
-        align-items: flex-start;
         .pro-container-menu-item-icon {
             padding-top: 2.5px;
         }

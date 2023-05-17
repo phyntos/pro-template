@@ -115,13 +115,13 @@ const DevTemplate = () => {
                     items: [
                         {
                             key: 'dev',
-                            label: 'DEV',
+                            label: 'DEV DEV DEVDEV DEV DEVDEV DEV DEVDEV',
                             roles: ['root'],
                             icon: <ToolOutlined />,
                             children: [
                                 {
                                     key: 'dev1',
-                                    label: 'DEV1',
+                                    label: 'DEV1 DEV1 DEV1DEV1 DEV1 DEV1DEV1 DEV1 DEV1DEV1',
                                     roles: ['root'],
                                     path: '/dev1',
                                     element: <DevItem />,
