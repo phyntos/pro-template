@@ -131,7 +131,7 @@ const ProContainer = <
     const { token } = theme.useToken();
     const [toolsWidth] = useSelectorSize('.pro-tools');
 
-    const [routeComponent, { breadcrumbs, menuItems: mappedItems, profilePath, activeKey }] = useProRoutes({
+    const [routeComponent, { breadcrumbs, menuItems, profilePath, activeKey }] = useProRoutes({
         role: userData.role,
         loading,
         transparent,
@@ -152,7 +152,7 @@ const ProContainer = <
                             <Menu
                                 theme='dark'
                                 mode='inline'
-                                items={mappedItems}
+                                items={menuItems}
                                 selectedKeys={activeKey ? [activeKey] : []}
                             />
                         </Sider>

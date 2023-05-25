@@ -170,11 +170,11 @@ const useProRoutes = <ItemKey extends string, Roles extends string>({
                     {filteredItems.map((item) => {
                         if (item.children) {
                             return (
-                                <>
+                                <React.Fragment key={item.key}>
                                     {item.children.map((childItem) => (
                                         <Route key={childItem.key} path={childItem.path} element={childItem.element} />
                                     ))}
-                                </>
+                                </React.Fragment>
                             );
                         }
                         return <Route key={item.key} path={item.path} element={item.element} />;
