@@ -103,7 +103,10 @@ const ProActionsDropdown = <T extends Record<string, any>>({
                     return true;
                 }}
                 open={open}
-                onOpenChange={setOpen}
+                onOpenChange={(isOpen) => {
+                    if (!isOpen) modalForm.resetFields();
+                    setOpen(isOpen);
+                }}
                 initialValues={initialValues}
                 form={modalForm}
                 submitter={{ searchConfig: { submitText: action?.label } }}

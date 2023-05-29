@@ -31,6 +31,9 @@ const DevItem = () => {
             <ProHeader
                 back
                 title='DEV'
+                initialValues={{
+                    dev: 132,
+                }}
                 actionItems={[
                     {
                         key: 'dev',
