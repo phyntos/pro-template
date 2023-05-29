@@ -3,8 +3,6 @@ import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-des
 import { Button, Dropdown, Form, Space } from 'antd';
 import React, { useState } from 'react';
 import { numberNormalize } from '../../../functions';
-
-import './ProHeader.scss';
 import { ProButton } from '../../../pro-template';
 
 type ModalTableData = {

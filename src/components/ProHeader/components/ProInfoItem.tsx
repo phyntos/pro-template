@@ -2,7 +2,6 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import Popover from 'antd/es/popover';
 import React from 'react';
-import './ProHeader.scss';
 
 export type InfoItem<T = string> = {
     key?: T;
