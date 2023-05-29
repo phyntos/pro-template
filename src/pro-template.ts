@@ -8,7 +8,9 @@ import ProTools from './components/ProContainer/components/ProTools';
 import useProRoutes from './components/ProContainer/components/useProRoutes';
 import ProFormCard, { useProFormCard } from './components/ProFormCard/ProFormCard';
 import ProFormNumber, { SeparatorInput } from './components/ProFormCard/ProFormNumber';
-import ProHeader, { ProActionsDropdown } from './components/ProHeader/ProHeader';
+import ProHeader from './components/ProHeader/ProHeader';
+import ProActionsDropdown from './components/ProHeader/components/ProActionsDropdown';
+import ProInfoItem from './components/ProHeader/components/ProInfoItem';
 import ProLocaleChanger, { ProLocaleProvider, useProLocale } from './components/ProLocaleChanger/ProLocaleChanger';
 import ProLogo from './components/ProLogo/ProLogo';
 import ProTabGroup from './components/ProTabGroup/ProTabGroup';
@@ -28,24 +30,25 @@ export {
     ProFormCard,
     ProButton,
     ProAuth,
-    useProContainer,
-    useProFormCard,
-    useProFormCardInstance,
     ProContainerItem,
     ProActionsDropdown,
-    numberNormalize,
-    useProAccess,
+    ProInfoItem,
     ProThemeProvider,
-    useProTheme,
     ProThemeChanger,
     ProLocaleProvider,
     ProLocaleChanger,
-    useProLocale,
     ProTools,
+    ProFormNumber,
+    SeparatorInput,
+    useProContainer,
+    useProFormCard,
+    useProFormCardInstance,
+    useProAccess,
+    useProTheme,
+    useProLocale,
     useProRoutes,
     useWindowSize,
     useSelectorSize,
+    numberNormalize,
     formatSeparator,
-    SeparatorInput,
-    ProFormNumber,
 };
