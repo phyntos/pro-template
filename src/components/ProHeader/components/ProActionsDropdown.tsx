@@ -15,7 +15,7 @@ type ModalTableData = {
     email: string | null;
 };
 
-export type ModalFieldTypes = 'textarea' | 'table' | 'input' | 'number' | 'checkbox';
+export type ModalFieldTypes = 'textarea' | 'table' | 'input' | 'number' | 'checkbox' | 'select';
 
 export type ModalField = {
     id?: number;
@@ -27,6 +27,7 @@ export type ModalField = {
     placeHolder?: string;
     read?: boolean;
     data?: null | ModalTableData[];
+    options?: { label: string; value: string }[];
     tableName?: string;
     columns?: any[];
     multipleResult?: boolean;
@@ -137,6 +138,17 @@ const ProActionsDropdown = <T extends Record<string, any>>({
                             );
                         case 'checkbox':
                             return <ProFormCheckbox label={field.label} name={field.name} key={field.id} />;
+                        case 'select':
+                            return (
+                                <ProFormSelect
+                                    label={field.label}
+                                    name={field.name}
+                                    key={field.id}
+                                    placeholder={field.placeHolder || undefined}
+                                    rules={field.required ? [{ required: true }] : undefined}
+                                    options={field.options}
+                                />
+                            );
                         case 'number':
                             return (
                                 <ProFormText
