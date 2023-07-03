@@ -1,5 +1,5 @@
 import { DownOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ModalForm, ProFormCheckbox, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Button, Dropdown, Form, Space } from 'antd';
 import React, { useState } from 'react';
 import { numberNormalize } from '../../../functions';
@@ -15,12 +15,14 @@ type ModalTableData = {
     email: string | null;
 };
 
+export type ModalFieldTypes = 'textarea' | 'table' | 'input' | 'number' | 'checkbox';
+
 export type ModalField = {
     id?: number;
     required?: boolean;
     model?: string;
     name: string;
-    type: 'textarea' | 'table' | 'input' | 'number';
+    type: ModalFieldTypes;
     label: string;
     placeHolder?: string;
     read?: boolean;
@@ -133,6 +135,8 @@ const ProActionsDropdown = <T extends Record<string, any>>({
                                     rules={field.required ? [{ required: true }] : undefined}
                                 />
                             );
+                        case 'checkbox':
+                            return <ProFormCheckbox label={field.label} name={field.name} key={field.id} />;
                         case 'number':
                             return (
                                 <ProFormText
